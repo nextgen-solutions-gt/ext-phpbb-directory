@@ -10,8 +10,6 @@
 
 namespace ernadoo\phpbbdirectory\core;
 
-use \ernadoo\phpbbdirectory\core\helper;
-
 class link extends helper
 {
 	/** @var \phpbb\db\driver\driver_interface */
@@ -244,7 +242,7 @@ class link extends helper
 		}
 
 		$sql = 'UPDATE ' . $this->categories_table . '
-			SET cat_links = cat_links - '.count($url_array).'
+			SET cat_links = cat_links - '.sizeof($url_array).'
 			WHERE cat_id = ' . (int) $cat_id;
 		$this->db->sql_query($sql);
 
@@ -323,7 +321,7 @@ class link extends helper
 		if ($details['scheme'] == 'https')
 		{
 			$default_port = 443;
-			$hostname = 'tls://' . $details['host'];
+			$hostname = 'ssl://' . $details['host'];
 		}
 
 		if (!isset($details['path']))
@@ -638,7 +636,7 @@ class link extends helper
 			return;
 		}
 
-		if (!count($error))
+		if (!sizeof($error))
 		{
 			if ($banner && $old_banner && !preg_match('/^(http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/|www\.).+/si', $old_banner))
 			{
@@ -671,7 +669,7 @@ class link extends helper
 		$prefix = unique_id() . '_';
 		$file->clean_filename('real', $prefix);
 
-		if (count($file->error))
+		if (sizeof($file->error))
 		{
 			$file->remove();
 			$error = array_merge($error, $file->error);
@@ -886,7 +884,7 @@ class link extends helper
 							'ON'	=> 'l.link_cat = c.cat_id'
 						)
 				),
-				'WHERE'		=> 'l.link_active = 1' . (count($exclude_array) ? ' AND ' . $this->db->sql_in_set('l.link_cat', $exclude_array, true) : ''),
+				'WHERE'		=> 'l.link_active = 1' . (sizeof($exclude_array) ? ' AND ' . $this->db->sql_in_set('l.link_cat', $exclude_array, true) : ''),
 				'ORDER_BY'	=> 'l.link_time DESC, l.link_id DESC');
 
 			$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -900,7 +898,7 @@ class link extends helper
 			}
 			$this->db->sql_freeresult($result);
 
-			if (count($rowset))
+			if (sizeof($rowset))
 			{
 				$this->template->assign_block_vars('block', array(
 					'S_COL_WIDTH'			=> (100 / $this->config['dir_recent_columns']) . '%',
@@ -914,16 +912,18 @@ class link extends helper
 					}
 
 					$this->template->assign_block_vars('block.row.col', array(
-						'UC_THUMBNAIL'            => '<a href="'.$row['link_url'].'" onclick="window.open(\''.$this->helper->route('ernadoo_phpbbdirectory_view_controller', array('link_id' => (int) $row['link_id'])).'\'); return false;"><img src="'.$row['link_thumb'].'" title="'.$row['link_name'].'" alt="'.$row['link_name'].'" /></a>',
-						'NAME'                    => $row['link_name'],
-						'USER'                    => get_username_string('full', $row['link_user_id'], $row['username'], $row['user_colour']),
-						'TIME'                    => ($row['link_time']) ? $this->user->format_date($row['link_time']) : '',
-						'CAT'                     => $row['cat_name'],
-						'COUNT'					  => $row['link_view'],
-						'COMMENT'                 => $row['link_comment'],
+						'NAME'						=> $row['link_name'],
+						'USER'						=> get_username_string('full', $row['link_user_id'], $row['username'], $row['user_colour']),
+						'TIME'						=> ($row['link_time']) ? $this->user->format_date($row['link_time']) : '',
+						'CAT'						=> $row['cat_name'],
+						'COUNT'						=> $row['link_view'],
+						'COMMENT'					=> $row['link_comment'],
 
-						'U_CAT'                   => $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $row['link_cat']),
-						'U_COMMENT'               => $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $row['link_id'])),
+						'U_CAT'						=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $row['link_cat']),
+						'U_COMMENT'					=> $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $row['link_id'])),
+						'U_LINK'					=> $row['link_url'],
+						'U_THUMB'					=> $this->display_thumb($row),
+						'U_VIEW'					=> $this->helper->route('ernadoo_phpbbdirectory_view_controller', array('link_id' => (int) $row['link_id'])),
 
 						'L_DIR_SEARCH_NB_CLICKS'	=> $this->language->lang('DIR_SEARCH_NB_CLICKS', (int) $row['link_view']),
 						'L_DIR_SEARCH_NB_COMMS'		=> $this->language->lang('DIR_SEARCH_NB_COMMS', (int) $row['link_comment']),

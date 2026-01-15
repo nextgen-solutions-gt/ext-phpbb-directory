@@ -1,0 +1,11 @@
+{
+    "name": "e1379/speaking-url",
+    "autoload": {
+        "psr-4": {
+            "E1379\\SpeakingUrl\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.2"
+    }
+}

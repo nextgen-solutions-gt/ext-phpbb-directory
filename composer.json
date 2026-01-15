@@ -2,8 +2,8 @@
 	"name": "ernadoo/phpbbdirectory",
 	"type": "phpbb-extension",
 	"description": "That extension adds a links directory at your phpBB forum.",
-	"homepage": "https://redmine.erwan-projects.fr/projects/ext-phpbb-directory",
-	"version": "2.0.0-RC1",
+	"homepage": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory",
+	"version": "2.0.0-RC3",
 	"time": "2015-03-08",
 	"license": "GPL-2.0",
 	"authors": [
@@ -24,11 +24,11 @@
 	"extra": {
 		"display-name": "phpBB Directory",
 		"soft-require": {
-			"phpbb/phpbb": ">=3.2.1"
+            "phpbb/phpbb": ">=3.2.0-b1,<4.0.0@dev"
 		},
 		"version-check": {
-			"host": "ernadoo.github.io",
-			"directory": "/ext-phpbb-directory",
+			"host": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory",
+			"directory": "/",
 			"filename": "phpbbdirectory_versions.json"
 		}
 	}

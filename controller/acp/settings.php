@@ -127,7 +127,7 @@ class settings
 		validate_config_vars($this->display_vars['vars'], $cfg_array, $error);
 
 		// Do not write values if there is an error
-		if (count($error))
+		if (sizeof($error))
 		{
 			$submit = false;
 		}
@@ -165,7 +165,7 @@ class settings
 			'L_TITLE'			=> $this->language->lang($this->display_vars['title']),
 			'L_TITLE_EXPLAIN'	=> $this->language->lang($this->display_vars['title'] . '_EXPLAIN'),
 
-			'S_ERROR'			=> (count($error)) ? true : false,
+			'S_ERROR'			=> (sizeof($error)) ? true : false,
 			'ERROR_MSG'			=> implode('<br />', $error),
 
 			'U_ACTION'			=> $this->u_action)
@@ -229,7 +229,7 @@ class settings
 				'dir_allow_flash'					=> array('lang' => 'DIR_ALLOW_FLASH',		'validate' => 'bool',		'type' => 'radio:yes_no',	'explain' => false),
 				'dir_allow_links'					=> array('lang' => 'DIR_ALLOW_LINKS',		'validate' => 'bool',		'type' => 'radio:yes_no',	'explain' => false),
 				'dir_allow_smilies'					=> array('lang' => 'DIR_ALLOW_SMILIES',		'validate' => 'bool',		'type' => 'radio:yes_no',	'explain' => false),
-				'dir_length_comments'				=> array('lang' => 'DIR_LENGTH_COMMENTS',	'validate' => 'int:1:999',	'type' => 'number:1:999',	'explain' => true),
+				'dir_length_comments'				=> array('lang' => 'DIR_LENGTH_COMMENTS',	'validate' => 'int:1:999',	'type' => 'number:1:999',	'explain' => false),
 				'dir_comments_per_page'				=> array('lang' => 'DIR_COMM_PER_PAGE',		'validate' => 'int:1:9999',	'type' => 'number:1:9999',	'explain' => false),
 
 				'legend6'							=> 'DIR_BANN_PARAM',
