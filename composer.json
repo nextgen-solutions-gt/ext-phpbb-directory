@@ -27,8 +27,8 @@
             "phpbb/phpbb": ">=3.2.0-b1,<4.0.0@dev"
 		},
 		"version-check": {
-			"host": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory",
-			"directory": "/",
+			"host": "https://raw.githubusercontent.com",
+			"directory": "/nextgen-solutions-gt/ext-phpbb-directory/master",
 			"filename": "phpbbdirectory_versions.json"
 		}
 	}

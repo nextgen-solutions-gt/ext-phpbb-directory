@@ -11,8 +11,8 @@
     "unstable": {
         "3.3": {
             "current": "2.0.0-RC3",
-			"download": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory/archive/refs/heads/master.zip",
-            "announcement": "",
+			"download": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory/archive/refs/tags/2.0.0-RC3.zip",
+            "announcement": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory/releases/tag/2.0.0-RC3",
             "eol": null,
             "security": false
         }
