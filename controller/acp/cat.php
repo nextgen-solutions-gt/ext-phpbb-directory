@@ -3,14 +3,14 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\controller\acp;
+namespace nextgen\phpbbdirectory\controller\acp;
 
-use \ernadoo\phpbbdirectory\core\helper;
+use \nextgen\phpbbdirectory\core\helper;
 
 class cat extends helper
 {
@@ -38,10 +38,10 @@ class cat extends helper
 	/** @var \phpbb\user */
 	protected $user;
 
-	/** @var \ernadoo\phpbbdirectory\core\categorie */
+	/** @var \nextgen\phpbbdirectory\core\categorie */
 	protected $categorie;
 
-	/** @var \ernadoo\phpbbdirectory\core\nestedset_category */
+	/** @var \nextgen\phpbbdirectory\core\nestedset_category */
 	protected $nestedset_category;
 
 	/** @var string Custom form action */
@@ -79,10 +79,10 @@ class cat extends helper
 	* @param \phpbb\request\request								$request			Request object
 	* @param \phpbb\template\template							$template			Template object
 	* @param \phpbb\user										$user				User object
-	* @param \ernadoo\phpbbdirectory\core\categorie				$categorie			PhpBB Directory extension categorie object
-	* @param \ernadoo\phpbbdirectory\core\nestedset_category	$nestedset_category	PhpBB Directory extension nestedset object
+	* @param \nextgen\phpbbdirectory\core\categorie				$categorie			PhpBB Directory extension categorie object
+	* @param \nextgen\phpbbdirectory\core\nestedset_category	$nestedset_category	PhpBB Directory extension nestedset object
 	*/
-	public function __construct(\phpbb\cache\service $cache, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \phpbb\language\language $language, \phpbb\log\log $log, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \ernadoo\phpbbdirectory\core\categorie $categorie, \ernadoo\phpbbdirectory\core\nestedset_category $nestedset_category)
+	public function __construct(\phpbb\cache\service $cache, \phpbb\db\driver\driver_interface $db, \phpbb\controller\helper $helper, \phpbb\language\language $language, \phpbb\log\log $log, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \nextgen\phpbbdirectory\core\categorie $categorie, \nextgen\phpbbdirectory\core\nestedset_category $nestedset_category)
 	{
 		$this->cache				= $cache;
 		$this->db					= $db;
@@ -716,8 +716,8 @@ class cat extends helper
 			'S_LINK_BACK'				=> ($this->cat_data['cat_link_back']) ? true : false,
 			'S_CRON_ENABLE'				=> ($this->cat_data['cat_cron_enable']) ? true : false,
 
-			'U_DATE'					=> $this->helper->route('ernadoo_phpbbdirectory_ajax_date_controller'),
-			'U_SLUG'					=> $this->helper->route('ernadoo_phpbbdirectory_ajax_slug_controller'),
+			'U_DATE'					=> $this->helper->route('nextgen_phpbbdirectory_ajax_date_controller'),
+			'U_SLUG'					=> $this->helper->route('nextgen_phpbbdirectory_ajax_slug_controller'),
 		));
 
 		return;

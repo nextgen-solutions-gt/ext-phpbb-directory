@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\core;
+namespace nextgen\phpbbdirectory\core;
 
 class categorie extends helper
 {
@@ -117,7 +117,7 @@ class categorie extends helper
 				'FORUM_ID'		=> $row['cat_id'],
 				'FORUM_NAME'	=> $row['cat_name'],
 				'S_FORUM_COUNT'	=> $iteration,
-				'LINK'			=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $row['cat_id']),
+				'LINK'			=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $row['cat_id']),
 			));
 
 			for ($i = 0; $i < $padding; $i++)
@@ -264,7 +264,7 @@ class categorie extends helper
 					if ($subcat_row['display'] && $subcat_row['parent_id'] == $dir_cat_id)
 					{
 						$subcats_list[] = array(
-							'link'		=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $subcat_id),
+							'link'		=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $subcat_id),
 							'name'		=> $subcat_row['name'],
 							'links'		=> $subcat_row['links']
 						);
@@ -282,7 +282,7 @@ class categorie extends helper
 				'CAT_LINKS'				=> $row['cat_links'],
 				'CAT_IMG'				=> $this->get_img_path('icons', $row['cat_icon']),
 
-				'U_CAT'					=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $row['cat_id']),
+				'U_CAT'					=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $row['cat_id']),
 			));
 
 			// Assign subcats loop for style authors
@@ -302,13 +302,13 @@ class categorie extends helper
 			'S_HAS_SUBCAT'		=> ($visible_cats) ? true : false,
 			'S_ROOT'			=> empty($this->data),
 
-			'U_MAKE_SEARCH'		=> $this->helper->route('ernadoo_phpbbdirectory_search_controller'),
+			'U_MAKE_SEARCH'		=> $this->helper->route('nextgen_phpbbdirectory_search_controller'),
 		));
 
 		// Do the categorie Prune thang - cron type job ...
 		if (!$this->config['use_system_cron'])
 		{
-			$task = $this->cron->find_task('ernadoo.phpbbdirectory.cron.task.core.prune_categorie');
+			$task = $this->cron->find_task('nextgen.phpbbdirectory.cron.task.core.prune_categorie');
 			$task->set_categorie_data($this->data);
 
 			if ($task->is_ready())
@@ -361,7 +361,7 @@ class categorie extends helper
 	{
 		global $phpbb_container;
 
-		$nestedset_category = $phpbb_container->get('ernadoo.phpbbdirectory.core.nestedset_category');
+		$nestedset_category = $phpbb_container->get('nextgen.phpbbdirectory.core.nestedset_category');
 
 		// Get cat parents
 		$dir_cat_parents = $nestedset_category->get_path_basic_data($dir_cat_data);
@@ -377,7 +377,7 @@ class categorie extends helper
 					'FORUM_NAME'	=> $parent_data['cat_name'],
 					'FORUM_ID'		=> $parent_cat_id,
 					'MICRODATA'		=> $microdata_attr . '="' . $parent_cat_id . '"',
-					'U_VIEW_FORUM'	=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $parent_cat_id),
+					'U_VIEW_FORUM'	=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $parent_cat_id),
 				));
 			}
 		}
@@ -386,7 +386,7 @@ class categorie extends helper
 			'FORUM_NAME'	=> $dir_cat_data['cat_name'],
 			'FORUM_ID'		=> $dir_cat_data['cat_id'],
 			'MICRODATA'		=> $microdata_attr . '="' . $dir_cat_data['cat_id'] . '"',
-			'U_VIEW_FORUM'	=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $dir_cat_data['cat_id']),
+			'U_VIEW_FORUM'	=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $dir_cat_data['cat_id']),
 		));
 
 		return;
@@ -444,7 +444,7 @@ class categorie extends helper
 							AND user_id = ' . (int) $user_id;
 					$this->db->sql_query($sql);
 
-					$redirect_url = $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $cat_id);
+					$redirect_url = $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $cat_id);
 					$message = $this->language->lang('DIR_NOT_WATCHING_CAT');
 
 					if (!$this->request->is_ajax())
@@ -482,7 +482,7 @@ class categorie extends helper
 					$sql = 'INSERT INTO ' . $this->watch_table . ' ' . $this->db->sql_build_array('INSERT', $data);
 					$this->db->sql_query($sql);
 
-					$redirect_url = $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $cat_id);
+					$redirect_url = $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $cat_id);
 					$message = $this->language->lang('DIR_ARE_WATCHING_CAT');
 
 					if (!$this->request->is_ajax())
@@ -507,8 +507,8 @@ class categorie extends helper
 
 		if ($can_watch)
 		{
-			$s_watching['link'] 		= $this->helper->route('ernadoo_phpbbdirectory_suscribe_controller', array('cat_id' => $cat_id, 'mode' => (($is_watching) ? 'unwatch' : 'watch')));
-			$s_watching['link_toggle'] 	= $this->helper->route('ernadoo_phpbbdirectory_suscribe_controller', array('cat_id' => $cat_id, 'mode' => ((!$is_watching) ? 'unwatch' : 'watch')));
+			$s_watching['link'] 		= $this->helper->route('nextgen_phpbbdirectory_suscribe_controller', array('cat_id' => $cat_id, 'mode' => (($is_watching) ? 'unwatch' : 'watch')));
+			$s_watching['link_toggle'] 	= $this->helper->route('nextgen_phpbbdirectory_suscribe_controller', array('cat_id' => $cat_id, 'mode' => ((!$is_watching) ? 'unwatch' : 'watch')));
 			$s_watching['title'] 		= $this->language->lang((($is_watching) ? 'DIR_STOP' : 'DIR_START') . '_WATCHING_CAT');
 			$s_watching['title_toggle'] = $this->language->lang(((!$is_watching) ? 'DIR_STOP' : 'DIR_START') . '_WATCHING_CAT');
 			$s_watching['is_watching'] 	= $is_watching;

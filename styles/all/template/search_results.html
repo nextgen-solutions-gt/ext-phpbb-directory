@@ -39,12 +39,12 @@
 					<strong>{{ lang('DIR_USER_PROP') }}</strong> {{ result.S_USER }}
 				</dt>
 				{% if result.IMG_FLAG %}
-				<dd><img src="{{ result.IMG_FLAG }}" alt="" ></dd>
+				<dd><img src="{{ result.IMG_FLAG }}" alt=""></dd>
 				{% endif %}
 				{% if result.S_TIME %}<dd><strong>&raquo;</strong> {{ result.S_TIME }}</dd>{% endif %}
 				<dd><strong>{{ lang('DIR_CAT') }}{{ lang('COLON') }}</strong> {{ result.S_CAT }}</dd>
 				<dd><strong>{{ result.L_DIR_SEARCH_NB_CLICKS }}{{ lang('COLON') }}</strong> {{ result.S_COUNT }}</dd>
-				<dd><strong>{{ result.L_DIR_SEARCH_NB_COMMS }}{{ lang('COLON') }}</strong> <a href="{{ result.U_COMMENT }}" class="commentlink" style="font-weight: normal;">{{ result.S_COMMENT }}</a></dd>
+				<dd><strong>{{ result.L_DIR_SEARCH_NB_COMMS }}{{ lang('COLON') }}</strong> {{ result.S_COMMENT }}</dd>
 			</dl>
 			<div class="postbody">
 				<h3><a href="{{ result.U_SITE }}" onclick="window.open('{{ result.U_VIEW|e('js') }}'); return false;" class="gen">{{ result.S_SITE }}</a></h3>

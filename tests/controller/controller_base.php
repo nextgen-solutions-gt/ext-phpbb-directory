@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\tests\controller
+namespace nextgen\phpbbdirectory\tests\controller
 {
 	abstract class controller_base extends \phpbb_database_test_case
 	{
@@ -40,7 +40,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 		*/
 		static protected function setup_extensions()
 		{
-			return array('ernadoo/phpbbdirectory');
+			return array('nextgen/phpbbdirectory');
 		}
 
 		public function setUp()
@@ -149,11 +149,11 @@ namespace ernadoo\phpbbdirectory\tests\controller
 			$twig_extensions_collection->add('template.twig.extensions.phpbb');
 			$phpbb_container->set('template.twig.extensions.collection', $twig_extensions_collection);
 
-			$phpbb_container->set('ernadoo.phpbbdirectory.core.nestedset_category',
-				new \ernadoo\phpbbdirectory\core\nestedset_category(
+			$phpbb_container->set('nextgen.phpbbdirectory.core.nestedset_category',
+				new \nextgen\phpbbdirectory\core\nestedset_category(
 					$this->db,
 					new \phpbb\lock\db(
-						'ernadoo.phpbbdirectory.table_lock.directory_cats',
+						'nextgen.phpbbdirectory.table_lock.directory_cats',
 						$this->config,
 						$this->db
 					),
@@ -181,7 +181,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 
 			$phpbb_log = new \phpbb\log\log($this->db, $this->user, $this->auth, $this->dispatcher, $phpbb_root_path, 'adm/', $phpEx, LOG_TABLE);
 
-			$this->core_link = new \ernadoo\phpbbdirectory\core\link(
+			$this->core_link = new \nextgen\phpbbdirectory\core\link(
 				$this->db,
 				$this->config,
 				$this->lang,
@@ -201,7 +201,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 			$this->core_link->set_path_helper($this->phpbb_path_helper);
 			$this->core_link->set_extension_manager($this->phpbb_extension_manager);
 
-			$this->core_cron = new \ernadoo\phpbbdirectory\core\cron(
+			$this->core_cron = new \nextgen\phpbbdirectory\core\cron(
 				$this->db,
 				$this->config,
 				$phpbb_log,
@@ -215,17 +215,17 @@ namespace ernadoo\phpbbdirectory\tests\controller
 			$this->core_cron->set_path_helper($this->phpbb_path_helper);
 			$this->core_cron->set_extension_manager($this->phpbb_extension_manager);
 
-			$cron_task = new \ernadoo\phpbbdirectory\cron\task\core\prune_categorie(
+			$cron_task = new \nextgen\phpbbdirectory\cron\task\core\prune_categorie(
 				$this->config,
 				$this->core_cron,
 				$phpEx
 			);
-			$cron_task->set_name('ernadoo.phpbbdirectory.cron.task.core.prune_categorie');
+			$cron_task->set_name('nextgen.phpbbdirectory.cron.task.core.prune_categorie');
 
 			$this->cron = $this->create_cron_manager(array($cron_task));
 			$phpbb_container->set('cron.manager', $this->cron);
 
-			$this->core_categorie = new \ernadoo\phpbbdirectory\core\categorie(
+			$this->core_categorie = new \nextgen\phpbbdirectory\core\categorie(
 				$this->db,
 				$this->config,
 				$this->lang,
@@ -240,7 +240,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 			$this->core_categorie->set_path_helper($this->phpbb_path_helper);
 			$this->core_categorie->set_extension_manager($this->phpbb_extension_manager);
 
-			$this->core_comment = new \ernadoo\phpbbdirectory\core\comment(
+			$this->core_comment = new \nextgen\phpbbdirectory\core\comment(
 				$this->db,
 			    $this->lang
 			);
@@ -248,7 +248,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 			$this->core_comment->set_path_helper($this->phpbb_path_helper);
 			$this->core_comment->set_extension_manager($this->phpbb_extension_manager);
 
-			$this->core_search = new \ernadoo\phpbbdirectory\search\fulltext_directory(
+			$this->core_search = new \nextgen\phpbbdirectory\search\fulltext_directory(
 				$this->db
 			);
 			$this->core_search->set_tables($table_categories, $tables_comments, $tables_links, $tables_votes, $tables_watch);
@@ -313,7 +313,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 	}
 }
 
-namespace ernadoo\phpbbdirectory\controller
+namespace nextgen\phpbbdirectory\controller
 {
 	function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_body.html', $u_action = '')
 	{
@@ -330,7 +330,7 @@ namespace ernadoo\phpbbdirectory\controller
 	}
 }
 
-namespace ernadoo\phpbbdirectory\core
+namespace nextgen\phpbbdirectory\core
 {
 	function redirect($url, $return = false, $disable_cd_check = false)
 	{

@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\notification\type;
+namespace nextgen\phpbbdirectory\notification\type;
 
 /**
 * phpbb directory notifications class
@@ -24,7 +24,7 @@ class directory_website_in_queue extends \phpbb\notification\type\base
 	*/
 	public function get_type()
 	{
-		return 'ernadoo.phpbbdirectory.notification.type.directory_website_in_queue';
+		return 'nextgen.phpbbdirectory.notification.type.directory_website_in_queue';
 	}
 
 	/**
@@ -140,7 +140,7 @@ class directory_website_in_queue extends \phpbb\notification\type\base
 	*/
 	public function get_email_template()
 	{
-		return '@ernadoo_phpbbdirectory/directory_website_in_queue';
+		return '@nextgen_phpbbdirectory/directory_website_in_queue';
 	}
 
 	/**
@@ -162,7 +162,7 @@ class directory_website_in_queue extends \phpbb\notification\type\base
 	{
 		global $phpbb_admin_path;
 
-		return append_sid("{$phpbb_admin_path}index.{$this->php_ext}", array('i' => '-ernadoo-phpbbdirectory-acp-phpbbdirectory_module', 'mode' => 'val'), true, $this->user->session_id);
+		return append_sid("{$phpbb_admin_path}index.{$this->php_ext}", array('i' => '-nextgen-phpbbdirectory-acp-phpbbdirectory_module', 'mode' => 'val'), true, $this->user->session_id);
 	}
 
 	/**

@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\core;
+namespace nextgen\phpbbdirectory\core;
 
 class cron extends helper
 {
@@ -27,7 +27,7 @@ class cron extends helper
 	/** @var \phpbb\notification\manager */
 	protected $notification;
 
-	/** @var \ernadoo\phpbbdirectory\core\link */
+	/** @var \nextgen\phpbbdirectory\core\link */
 	protected $link;
 
 	/** @var string phpBB root path */
@@ -44,11 +44,11 @@ class cron extends helper
 	* @param \phpbb\log\log						$phpbb_log			Log object
 	* @param \phpbb\user 						$user				User object
 	* @param \phpbb\notification\manager		$notification		Notification object
-	* @param \ernadoo\phpbbdirectory\core\link	$link				PhpBB Directory extension link object
+	* @param \nextgen\phpbbdirectory\core\link	$link				PhpBB Directory extension link object
 	* @param string         					$root_path			phpBB root path
 	* @param string         					$php_ext			phpEx
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\log\log $phpbb_log, \phpbb\user $user, \phpbb\notification\manager $notification, \ernadoo\phpbbdirectory\core\link $link, $root_path, $php_ext)
+	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\log\log $phpbb_log, \phpbb\user $user, \phpbb\notification\manager $notification, \nextgen\phpbbdirectory\core\link $link, $root_path, $php_ext)
 	{
 		$this->db				= $db;
 		$this->config			= $config;
@@ -198,7 +198,7 @@ class cron extends helper
 				strip_bbcode($data['link_description']);
 
 				$notification_data = array(
-					'cat_name'			=> \ernadoo\phpbbdirectory\core\categorie::getname((int) $data['link_cat']),
+					'cat_name'			=> \nextgen\phpbbdirectory\core\categorie::getname((int) $data['link_cat']),
 					'link_id'			=> $data['link_id'],
 					'link_user_id'		=> $data['link_user_id'],
 					'link_name'			=> $data['link_name'],
@@ -209,10 +209,10 @@ class cron extends helper
 
 				if ($data['link_nb_check'])
 				{
-					$this->notification->delete_notifications('ernadoo.phpbbdirectory.notification.type.directory_website_error_cron', $notification_data['link_id']);
+					$this->notification->delete_notifications('nextgen.phpbbdirectory.notification.type.directory_website_error_cron', $notification_data['link_id']);
 				}
 
-				$this->notification->add_notifications('ernadoo.phpbbdirectory.notification.type.directory_website_error_cron', $notification_data);
+				$this->notification->add_notifications('nextgen.phpbbdirectory.notification.type.directory_website_error_cron', $notification_data);
 			}
 		}
 	}

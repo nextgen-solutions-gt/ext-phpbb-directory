@@ -1,6 +1,6 @@
 services:
-     ernadoo.phpbbdirectory.notification.type.directory_website_in_queue:
-        class: ernadoo\phpbbdirectory\notification\type\directory_website_in_queue
+     nextgen.phpbbdirectory.notification.type.directory_website_in_queue:
+        class: nextgen\phpbbdirectory\notification\type\directory_website_in_queue
         shared: false
         parent: notification.type.base
         calls:
@@ -8,8 +8,8 @@ services:
         tags:
             - { name: notification.type }
 
-     ernadoo.phpbbdirectory.notification.type.directory_website:
-        class: ernadoo\phpbbdirectory\notification\type\directory_website
+     nextgen.phpbbdirectory.notification.type.directory_website:
+        class: nextgen\phpbbdirectory\notification\type\directory_website
         shared: false
         parent: notification.type.base
         calls:
@@ -19,8 +19,8 @@ services:
         tags:
             - { name: notification.type }
 
-     ernadoo.phpbbdirectory.notification.type.directory_website_approved:
-        class: ernadoo\phpbbdirectory\notification\type\directory_website_approved
+     nextgen.phpbbdirectory.notification.type.directory_website_approved:
+        class: nextgen\phpbbdirectory\notification\type\directory_website_approved
         shared: false
         parent: notification.type.base
         calls:
@@ -28,15 +28,15 @@ services:
         tags:
             - { name: notification.type }
 
-     ernadoo.phpbbdirectory.notification.type.directory_website_disapproved:
-        class: ernadoo\phpbbdirectory\notification\type\directory_website_disapproved
+     nextgen.phpbbdirectory.notification.type.directory_website_disapproved:
+        class: nextgen\phpbbdirectory\notification\type\directory_website_disapproved
         shared: false
         parent: notification.type.base
         tags:
             - { name: notification.type }
 
-     ernadoo.phpbbdirectory.notification.type.directory_website_error_cron:
-        class: ernadoo\phpbbdirectory\notification\type\directory_website_error_cron
+     nextgen.phpbbdirectory.notification.type.directory_website_error_cron:
+        class: nextgen\phpbbdirectory\notification\type\directory_website_error_cron
         shared: false
         parent: notification.type.base
         tags:

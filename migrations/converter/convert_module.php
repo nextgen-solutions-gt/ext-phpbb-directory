@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\migrations\converter;
+namespace nextgen\phpbbdirectory\migrations\converter;
 
 /**
 * Convert module
@@ -52,8 +52,8 @@ class convert_module extends \phpbb\db\migration\migration
 	public function rename_old_module()
 	{
 		$module_data = array(
-			'module_basename'	=> '\ernadoo\phpbbdirectory\acp\phpbbdirectory_module',
-			'module_auth'		=> 'ext_ernadoo/phpbbdirectory'
+			'module_basename'	=> '\nextgen\phpbbdirectory\acp\phpbbdirectory_module',
+			'module_auth'		=> 'ext_nextgen/phpbbdirectory'
 		);
 
 		$sql = 'UPDATE '  . $this->table_prefix . 'modules

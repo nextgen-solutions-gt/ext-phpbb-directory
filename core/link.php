@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\core;
+namespace nextgen\phpbbdirectory\core;
 
 class link extends helper
 {
@@ -114,11 +114,11 @@ class link extends helper
 				WHERE cat_id = ' . (int) $data['link_cat'];
 			$this->db->sql_query($sql);
 
-			$notification_type = 'ernadoo.phpbbdirectory.notification.type.directory_website';
+			$notification_type = 'nextgen.phpbbdirectory.notification.type.directory_website';
 		}
 		else if ($this->config['dir_mail'])
 		{
-			$notification_type = 'ernadoo.phpbbdirectory.notification.type.directory_website_in_queue';
+			$notification_type = 'nextgen.phpbbdirectory.notification.type.directory_website_in_queue';
 		}
 
 		$this->db->sql_transaction('commit');
@@ -132,7 +132,7 @@ class link extends helper
 					'link_url'			=> $data['link_url'],
 					'link_description'	=> $data['link_description'],
 					'cat_id'			=> (int) $data['link_cat'],
-					'cat_name'			=> \ernadoo\phpbbdirectory\core\categorie::getname((int) $data['link_cat']),
+					'cat_name'			=> \nextgen\phpbbdirectory\core\categorie::getname((int) $data['link_cat']),
 				)
 			);
 
@@ -156,14 +156,14 @@ class link extends helper
 			'link_name'			=> $data['link_name'],
 			'link_description'	=> $data['link_description'],
 			'cat_id'			=> (int) $data['link_cat'],
-			'cat_name'			=> \ernadoo\phpbbdirectory\core\categorie::getname((int) $data['link_cat']),
+			'cat_name'			=> \nextgen\phpbbdirectory\core\categorie::getname((int) $data['link_cat']),
 		);
 
 		$old_cat = array_pop($data);
 
 		if ($old_cat != $data['link_cat'] || $need_approval)
 		{
-			$this->notification->delete_notifications('ernadoo.phpbbdirectory.notification.type.directory_website', (int) $link_id);
+			$this->notification->delete_notifications('nextgen.phpbbdirectory.notification.type.directory_website', (int) $link_id);
 
 			$this->db->sql_transaction('begin');
 
@@ -179,12 +179,12 @@ class link extends helper
 					WHERE cat_id = ' . (int) $data['link_cat'];
 				$this->db->sql_query($sql);
 
-				$notification_type = 'ernadoo.phpbbdirectory.notification.type.directory_website';
+				$notification_type = 'nextgen.phpbbdirectory.notification.type.directory_website';
 			}
 			else
 			{
 				$data['link_active'] = false;
-				$notification_type = 'ernadoo.phpbbdirectory.notification.type.directory_website_in_queue';
+				$notification_type = 'nextgen.phpbbdirectory.notification.type.directory_website_in_queue';
 			}
 
 			$this->db->sql_transaction('commit');
@@ -251,8 +251,8 @@ class link extends helper
 		foreach ($url_array as $link_id)
 		{
 			$this->notification->delete_notifications(array(
-				'ernadoo.phpbbdirectory.notification.type.directory_website',
-				'ernadoo.phpbbdirectory.notification.type.directory_website_in_queue'
+				'nextgen.phpbbdirectory.notification.type.directory_website',
+				'nextgen.phpbbdirectory.notification.type.directory_website_in_queue'
 			), $link_id);
 		}
 
@@ -375,7 +375,7 @@ class link extends helper
 	{
 		global $phpbb_extension_manager;
 
-		$ext_path = $phpbb_extension_manager->get_extension_path('ernadoo/phpbbdirectory', true);
+		$ext_path = $phpbb_extension_manager->get_extension_path('nextgen/phpbbdirectory', true);
 		$flag_path = $ext_path.'images/flags/';
 		$img_flag = 'no_flag.png';
 
@@ -471,46 +471,55 @@ class link extends helper
 	}
 
 	/**
-	* Display and resize a banner
-	*
-	* @param	array	$data		link's data from db
-	* @return	string	$s_banner	html code.
-	*/
-	public function display_bann($data)
-	{
-		if (!empty($data['link_banner']))
-		{
-			if (!preg_match('/^(http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/|www\.).+/si', $data['link_banner']))
-			{
-				$img_src = $this->helper->route('ernadoo_phpbbdirectory_banner_controller', array('banner_img' => $data['link_banner']));
-				$physical_path = $this->get_banner_path($data['link_banner']);
-			}
-			else
-			{
-				$img_src = $physical_path = $data['link_banner'];
-			}
+    * Display and resize a banner
+    *
+    * @param    array    $data        link's data from db
+    * @return    string    $s_banner    html code.
+    */
+    public function display_bann($data)
+    {
+        $banner = $data['link_banner'];
 
-			if (($image_data = $this->imagesize->getImageSize($physical_path)) === false)
-			{
-				return '';
-			}
+        if (empty($banner))
+        {
+            return '';
+        }
 
-			$width = $image_data['width'];
-			$height = $image_data['height'];
+        // 1. Caso URL Remota
+        if (preg_match('/^(http|https|ftp|ftps):\/\//si', $banner) || strpos(strtolower($banner), 'www.') === 0)
+        {
+            $img_src = (strpos(strtolower($banner), 'www.') === 0) ? 'http://' . $banner : $banner;
+        }
+        // 2. Caso Archivo Local
+        else
+        {
+            $filename = basename($banner);
+            $physical_path = $this->root_path . 'images/directory/banners/' . $filename;
 
-			if (($width > $this->config['dir_banner_width'] || $height > $this->config['dir_banner_height']) && $this->config['dir_banner_width'] > 0 && $this->config['dir_banner_height'] > 0)
-			{
-				$coef_w = $width / $this->config['dir_banner_width'];
-				$coef_h = $height / $this->config['dir_banner_height'];
-				$coef_max = max($coef_w, $coef_h);
-				$width /= $coef_max;
-				$height /= $coef_max;
-			}
+            if (file_exists($physical_path))
+            {
+                $img_src = generate_board_url() . '/images/directory/banners/' . $filename;
+            }
+            else
+            {
+                $img_src = $this->helper->route('nextgen_phpbbdirectory_banner_route', array('banner_img' => $banner));
+            }
+        }
 
-			return '<img src="' . $img_src . '" width="' . $width . '" height="' . $height . '" alt="'.$data['link_name'].'" title="'.$data['link_name'].'" />';
-		}
-		return '';
-	}
+		// --- DINAMISMO INTELIGENTE DESDE EL ACP ---
+        $width_cfg  = (int) $this->config['dir_banner_width'];
+        $height_cfg = (int) $this->config['dir_banner_height'];
+
+        // Si el valor es mayor a 0, aplicamos la medida. Si es 0, usamos 'auto' o nada.
+        $width_attr  = ($width_cfg > 0)  ? ' width="' . $width_cfg . '"' : '';
+        $height_attr = ($height_cfg > 0) ? ' height="' . $height_cfg . '"' : '';
+        
+        // Para el estilo CSS: si es 0, usamos 'auto' para no deformar la imagen
+        $style_height = ($height_cfg > 0) ? $height_cfg . 'px' : 'auto';
+        $style_width  = ($width_cfg > 0)  ? $width_cfg . 'px'  : 'auto';
+
+        return '<img src="' . $img_src . '"' . $width_attr . $height_attr . ' alt="' . $data['link_name'] . '" title="' . $data['link_name'] . '" class="dir-banner" style="max-width: 100%; width: ' . $style_width . '; height: ' . $style_height . ';" />';
+    }
 
 	/**
 	* Add a vote in db, for a specifi link
@@ -607,45 +616,88 @@ class link extends helper
 	}
 
 	/**
-	* Primary work on banner, can edit, copy or check a banner
-	*
-	* @param	string	$banner	The banner's remote url
-	* @param	array	$error	The array error, passed by reference
-	* @return	null
-	*/
-	public function banner_process(&$banner, &$error)
-	{
-		$old_banner = $this->request->variable('old_banner', '');
+    * Primary work on banner, can edit, copy or check a banner
+    *
+    * @param    string    $banner    The banner's remote url (passed by reference)
+    * @param    array    $error    The array error, passed by reference
+    * @return    null
+    */
+    public function banner_process(&$banner, &$error)
+    {
+        // Solo procesamos si es una URL externa
+        if (!$banner || !preg_match('/^(http|https):\/\//si', $banner)) return;
 
-		$destination = $this->root_path . $this->get_banner_path();
+        $destination = $this->root_path . 'images/directory/banners/';
+        
+        if (!file_exists($destination)) {
+            @mkdir($destination, 0755, true);
+            @file_put_contents($destination . 'index.htm', '');
+        }
 
-		// Can we upload?
-		$can_upload = ($this->config['dir_storage_banner'] && $this->filesystem->exists($destination) && $this->filesystem->is_writable($destination) && (@ini_get('file_uploads') || strtolower(@ini_get('file_uploads')) == 'on')) ? true : false;
+        // Limpiamos espacios en la URL
+        $banner_url = str_replace(' ', '%20', $banner);
+        $temp_name = 'temp_' . md5(unique_id()) . '.tmp';
+        $local_path = $destination . $temp_name;
 
-		if ($banner && $can_upload)
-		{
-			$file = $this->_banner_upload($banner, $error);
-		}
-		else if ($banner)
-		{
-			$file = $this->_banner_remote($banner, $error);
-		}
-		else if ($this->request->is_set_post('delete_banner') && $old_banner)
-		{
-			$this->_banner_delete($old_banner);
-			return;
-		}
+        // --- INTENTO DE DESCARGA (cURL + Fallback) ---
+        $content = false;
+        
+        if (function_exists('curl_init')) {
+            $ch = curl_init($banner_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+            // User-Agent simulando Chrome para evitar bloqueos
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+            
+            $content = curl_exec($ch);
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
 
-		if (!sizeof($error))
-		{
-			if ($banner && $old_banner && !preg_match('/^(http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/|www\.).+/si', $old_banner))
-			{
-				$this->_banner_delete($old_banner);
-			}
+            if ($http_code >= 400) $content = false;
+        }
+        else if ((bool) @ini_get('allow_url_fopen')) {
+            $opts = ["http" => ["header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\r\n"]];
+            $context = stream_context_create($opts);
+            $content = @file_get_contents($banner_url, false, $context);
+        }
 
-			$banner = !empty($file) ? $file : '';
-		}
-	}
+        // --- GUARDADO ---
+        if ($content && @file_put_contents($local_path, $content)) {
+            $img_info = @getimagesize($local_path);
+            
+            if ($img_info) {
+                // Detectar extensión correcta
+                switch ($img_info['mime']) {
+                    case 'image/gif': $real_ext = 'gif'; break;
+                    case 'image/png': $real_ext = 'png'; break;
+                    case 'image/webp': $real_ext = 'webp'; break;
+                    default: $real_ext = 'jpg'; break;
+                }
+
+                $final_name = 'remote_' . substr(md5($banner . time()), 0, 10) . '.' . $real_ext;
+                
+                if (rename($local_path, $destination . $final_name)) {
+                    // Borrar banner antiguo si existe
+                    $old_banner = $this->request->variable('old_banner', '');
+                    if ($old_banner && file_exists($destination . $old_banner) && $old_banner !== $final_name) {
+                        @unlink($destination . $old_banner);
+                    }
+                    // ASIGNAMOS EL NOMBRE DEL ARCHIVO LOCAL
+                    $banner = $final_name; 
+                }
+            } else {
+                // No es imagen, borramos
+                @unlink($local_path);
+                $error[] = $this->language->lang('DIR_ERROR_NOT_IMAGE');
+                $banner = ''; 
+            }
+        } else if (!$content && empty($error)) {
+            $error[] = $this->language->lang('DIR_ERROR_CONNECT_FAIL');
+            $banner = '';
+        }
+    }
 
 	/**
 	* Copy a remonte banner to server.
@@ -829,7 +881,7 @@ class link extends helper
 	{
 		$list = '';
 
-		$this->language->add_lang('directory_flags', 'ernadoo/phpbbdirectory');
+		$this->language->add_lang('directory_flags', 'nextgen/phpbbdirectory');
 
 		$flags = $this->preg_grep_keys('/^DIR_FLAG_CODE_/i', $this->language->get_lang_array());
 
@@ -919,11 +971,11 @@ class link extends helper
 						'COUNT'						=> $row['link_view'],
 						'COMMENT'					=> $row['link_comment'],
 
-						'U_CAT'						=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $row['link_cat']),
-						'U_COMMENT'					=> $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $row['link_id'])),
+						'U_CAT'						=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $row['link_cat']),
+						'U_COMMENT'					=> $this->helper->route('nextgen_phpbbdirectory_comment_view_controller', array('link_id' => (int) $row['link_id'])),
 						'U_LINK'					=> $row['link_url'],
 						'U_THUMB'					=> $this->display_thumb($row),
-						'U_VIEW'					=> $this->helper->route('ernadoo_phpbbdirectory_view_controller', array('link_id' => (int) $row['link_id'])),
+						'U_VIEW'					=> $this->helper->route('nextgen_phpbbdirectory_view_controller', array('link_id' => (int) $row['link_id'])),
 
 						'L_DIR_SEARCH_NB_CLICKS'	=> $this->language->lang('DIR_SEARCH_NB_CLICKS', (int) $row['link_view']),
 						'L_DIR_SEARCH_NB_COMMS'		=> $this->language->lang('DIR_SEARCH_NB_COMMS', (int) $row['link_comment']),

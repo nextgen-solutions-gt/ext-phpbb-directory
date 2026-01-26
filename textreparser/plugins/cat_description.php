@@ -8,7 +8,7 @@
 *
 */
 
-namespace ernadoo\phpbbdirectory\textreparser\plugins;
+namespace nextgen\phpbbdirectory\textreparser\plugins;
 
 class cat_description extends \phpbb\textreparser\row_based_plugin
 {

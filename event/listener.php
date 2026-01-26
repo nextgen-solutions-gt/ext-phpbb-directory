@@ -3,18 +3,18 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\event;
+namespace nextgen\phpbbdirectory\event;
 
 /**
  * Event listener
  */
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use \ernadoo\phpbbdirectory\core\helper;
+use \nextgen\phpbbdirectory\core\helper;
 
 class listener extends helper implements EventSubscriberInterface
 {
@@ -94,7 +94,7 @@ class listener extends helper implements EventSubscriberInterface
 
 		$this->template->assign_vars(array(
 			'T_DIR_THEME_LANG_NAME' => $theme_lang_path,
-			'U_DIRECTORY'			=> $this->helper->route('ernadoo_phpbbdirectory_base_controller'),
+			'U_DIRECTORY'			=> $this->helper->route('nextgen_phpbbdirectory_base_controller'),
 		));
 	}
 
@@ -109,7 +109,7 @@ class listener extends helper implements EventSubscriberInterface
 		if (strrpos($event['row']['session_page'], 'app.' . $this->php_ext . '/directory') === 0)
 		{
 			$event['location']		= $this->language->lang('DIRECTORY');
-			$event['location_url']	= $this->helper->route('ernadoo_phpbbdirectory_base_controller');
+			$event['location_url']	= $this->helper->route('nextgen_phpbbdirectory_base_controller');
 		}
 	}
 
@@ -123,7 +123,7 @@ class listener extends helper implements EventSubscriberInterface
 	{
 		$lang_set_ext = $event['lang_set_ext'];
 		$lang_set_ext[] = array(
-			'ext_name' => 'ernadoo/phpbbdirectory',
+			'ext_name' => 'nextgen/phpbbdirectory',
 			'lang_set' => 'directory',
 		);
 		$event['lang_set_ext'] = $lang_set_ext;

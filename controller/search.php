@@ -3,14 +3,14 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <https://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\controller;
+namespace nextgen\phpbbdirectory\controller;
 
-use \ernadoo\phpbbdirectory\core\helper;
+use \nextgen\phpbbdirectory\core\helper;
 
 class search extends helper
 {
@@ -42,13 +42,13 @@ class search extends helper
 	/** @var \phpbb\pagination */
 	protected $pagination;
 
-	/** @var \ernadoo\phpbbdirectory\search\fulltext_directory */
+	/** @var \nextgen\phpbbdirectory\search\fulltext_directory */
 	protected $search;
 
-	/** @var \ernadoo\phpbbdirectory\core\categorie */
+	/** @var \nextgen\phpbbdirectory\core\categorie */
 	protected $categorie;
 
-	/** @var \ernadoo\phpbbdirectory\core\link */
+	/** @var \nextgen\phpbbdirectory\core\link */
 	protected $link;
 
 	/**
@@ -63,11 +63,11 @@ class search extends helper
 	* @param \phpbb\request\request 							$request		Request object
 	* @param \phpbb\auth\auth 									$auth			Auth object
 	* @param \phpbb\pagination 									$pagination		Pagination object
-	* @param \ernadoo\phpbbdirectory\search\fulltext_directory	$search			PhpBB Directory extension search object
-	* @param \ernadoo\phpbbdirectory\core\categorie				$categorie		PhpBB Directory extension categorie object
-	* @param \ernadoo\phpbbdirectory\core\link					$link			PhpBB Directory extension link object
+	* @param \nextgen\phpbbdirectory\search\fulltext_directory	$search			PhpBB Directory extension search object
+	* @param \nextgen\phpbbdirectory\core\categorie				$categorie		PhpBB Directory extension categorie object
+	* @param \nextgen\phpbbdirectory\core\link					$link			PhpBB Directory extension link object
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\language\language $language, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\request\request $request, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \ernadoo\phpbbdirectory\search\fulltext_directory $search, \ernadoo\phpbbdirectory\core\categorie $categorie, \ernadoo\phpbbdirectory\core\link $link)
+	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\language\language $language, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\request\request $request, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \nextgen\phpbbdirectory\search\fulltext_directory $search, \nextgen\phpbbdirectory\core\categorie $categorie, \nextgen\phpbbdirectory\core\link $link)
 	{
 		$this->db			= $db;
 		$this->config		= $config;
@@ -189,11 +189,11 @@ class search extends helper
 			}
 
 			$base_url = array(
-				'routes'	=> 'ernadoo_phpbbdirectory_search_controller',
+				'routes'	=> 'nextgen_phpbbdirectory_search_controller',
 				'params'	=> array_merge($u_search, $u_sort_param),
 			);
 
-			$u_search = $this->helper->route('ernadoo_phpbbdirectory_search_controller', array_merge($u_search, $u_sort_param));
+			$u_search = $this->helper->route('nextgen_phpbbdirectory_search_controller', array_merge($u_search, $u_sort_param));
 
 			$this->pagination->generate_template_pagination($base_url, 'pagination', 'page', $total_match_count, $this->config['dir_show'], $start);
 
@@ -208,15 +208,15 @@ class search extends helper
 				'S_SELECT_SORT_DAYS'	=> $s_limit_days,
 				'S_SEARCH_ACTION'		=> $u_search,
 
-				'U_DIR_SEARCH'			=> $this->helper->route('ernadoo_phpbbdirectory_search_controller'),
+				'U_DIR_SEARCH'			=> $this->helper->route('nextgen_phpbbdirectory_search_controller'),
 				'U_SEARCH_WORDS'		=> $u_search,
 			));
 
 			if ($cat_id)
 			{
 				$this->template->assign_vars(array(
-					'SEARCH_CATEGORY'	=> $this->language->lang('RETURN_TO', \ernadoo\phpbbdirectory\core\categorie::getname((int) $cat_id)),
-					'U_SEARCH_CATEGORY'	=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $cat_id),
+					'SEARCH_CATEGORY'	=> $this->language->lang('RETURN_TO', \nextgen\phpbbdirectory\core\categorie::getname((int) $cat_id)),
+					'U_SEARCH_CATEGORY'	=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $cat_id),
 				));
 			}
 
@@ -288,9 +288,9 @@ class search extends helper
 							'L_DIR_SEARCH_NB_CLICKS'	=> $this->language->lang('DIR_SEARCH_NB_CLICKS', (int) $data['link_view']),
 							'L_DIR_SEARCH_NB_COMMS'		=> $this->language->lang('DIR_SEARCH_NB_COMMS', (int) $data['link_comment']),
 
-							'U_COMMENT'		=> $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $data['link_id'])),
+							'U_COMMENT'		=> $this->helper->route('nextgen_phpbbdirectory_comment_view_controller', array('link_id' => (int) $data['link_id'])),
 							'U_SITE'		=> $data['link_url'],
-							'U_VIEW'		=> $this->helper->route('ernadoo_phpbbdirectory_view_controller', array('link_id' => (int) $data['link_id'])),
+							'U_VIEW'		=> $this->helper->route('nextgen_phpbbdirectory_view_controller', array('link_id' => (int) $data['link_id'])),
 							'LINK_ID'		=> $data['link_id'],
 						));
 					}

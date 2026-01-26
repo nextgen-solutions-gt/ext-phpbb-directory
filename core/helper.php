@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\core;
+namespace nextgen\phpbbdirectory\core;
 
 abstract class helper
 {
@@ -34,7 +34,7 @@ abstract class helper
 	public $watch_table;
 
 	/** @var string */
-	private $ext_name = 'ernadoo/phpbbdirectory';
+	private $ext_name = 'nextgen/phpbbdirectory';
 
 	/**
 	* Set the extension manager

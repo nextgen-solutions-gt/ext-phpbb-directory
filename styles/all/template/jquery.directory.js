@@ -1,61 +1,176 @@
 /**
 * @package phpBB Directory
-* @copyright (c) 2014 ErnadoO
+* @copyright (c) 2025 nextgen
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 
-(function ($) {  // Avoid conflicts with other libraries
+(function ($) {  // Evitar conflictos con otras librerías
 
-	$('.commentlink').click(function(event) {
-		event.preventDefault();
+    // Cambio de banderas
+    $('#dir_flag').change(function() {
+        var src_image = dir_flag_path + encodeURI($(this).val());
+        $('#flag_image').attr('src', src_image);
+    });
 
-		var url = $(this).attr('href');
-		var windowName = 'phpBB_dir_comment';
+    // Callback para votos
+    phpbb.addAjaxCallback('phpbbdirectory.add_vote', function(data) {
+        var link_id = data.LINK_ID;
+        if(link_id) {
+            $('#dir_note' + link_id).html(data.NOTE);
+            $('#dir_vote' + link_id).html(data.NB_VOTE);
+            $(this).text('');
+        }
+        phpbb.closeDarkenWrapper(3000);
+    });
 
-		window.open(url, windowName, 'height=600, width=905, resizable=yes, scrollbars=yes');
-	});
+    // Callback para borrar sitio
+    phpbb.addAjaxCallback('phpbbdirectory.delete_site', function(data) {
+        var link_id = data.LINK_ID;
+        if(link_id) {
+            $('#l' + link_id).remove();
+            $('.dir_total_links').html(data.TOTAL_LINKS);
+        }
+        phpbb.closeDarkenWrapper(3000);
+    });
 
-	$('#dir_flag').change(function() {
-		var src_image = dir_flag_path + encodeURI($(this).val());
+    // Callback para borrar comentario (desde el botón nativo de phpBB)
+    phpbb.addAjaxCallback('phpbbdirectory.delete_comment', function(data) {
+        var comment_id = data.COMMENT_ID;
+        if(comment_id) {
+            $('#p' + comment_id).remove();
+            $('.dir_total_comments').html(data.TOTAL_COMMENTS);
+        }
+        phpbb.closeDarkenWrapper(3000);
+    });
 
-		$('#flag_image').attr('src',src_image);
-	});
+})(jQuery); 
 
-	phpbb.addAjaxCallback('phpbbdirectory.add_vote', function(data) {
+(function () {
 
-		var link_id = data.LINK_ID;
+    // Cargar / Mostrar comentarios (Toggle)
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.js-dir-comments');
+        if (!btn) return;
 
-		if(link_id) {
-			$('#dir_note' + link_id).html(data.NOTE);
-			$('#dir_vote' + link_id).html(data.NB_VOTE);
-			$(this).text('');
-		}
+        e.preventDefault();
 
-		phpbb.closeDarkenWrapper(3000);
-	});
+        const linkId = btn.dataset.linkId;
+        const container = document.getElementById('dir-comments-' + linkId);
+        if (!container) return;
 
-	phpbb.addAjaxCallback('phpbbdirectory.delete_site', function(data) {
+        if (container.dataset.loaded === '1') {
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            return;
+        }
 
-		var link_id = data.LINK_ID;
+        // Indicador de carga compatible con phpBB 3.3
+        if (typeof phpbb.loading_indicator !== 'undefined') phpbb.loading_indicator.show();
 
-		if(link_id) {
-			$('#l' + link_id).remove();
-			$('.dir_total_links').html(data.TOTAL_LINKS);
-		}
+        fetch(btn.href + (btn.href.includes('?') ? '&ajax=1' : '?ajax=1'), {
+            credentials: 'same-origin'
+        })
+        .then(r => r.text())
+        .then(html => {
+            container.innerHTML = html;
+            container.dataset.loaded = '1';
+            container.style.display = 'block';
+        })
+        .finally(() => {
+            if (typeof phpbb.loading_indicator !== 'undefined') phpbb.loading_indicator.hide();
+        });
+    });
 
-		phpbb.closeDarkenWrapper(3000);
-	});
+    // Envío de formulario de comentarios vía AJAX
+    document.addEventListener('submit', function (e) {
+        const form = e.target.closest('.js-dir-comment-form');
+        if (!form) return;
 
-	phpbb.addAjaxCallback('phpbbdirectory.delete_comment', function(data) {
+        e.preventDefault();
 
-		var comment_id = data.COMMENT_ID;
+        const linkId = form.dataset.linkId;
+        const container = document.getElementById('dir-comments-' + linkId);
+        if (!container) return;
 
-		if(comment_id) {
-			$('#p' + comment_id).remove();
-			$('.dir_total_comments').html(data.TOTAL_COMMENTS);
-		}
+        if (typeof phpbb.loading_indicator !== 'undefined') phpbb.loading_indicator.show();
 
-		phpbb.closeDarkenWrapper(3000);
-	});
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin'
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
 
-})(jQuery); // Avoid conflicts with other libraries
+            // Actualizar el token de formulario para permitir envíos consecutivos
+            if (data.new_token) {
+                const tokenInput = form.querySelector('input[name="form_token"]');
+                if (tokenInput) tokenInput.value = data.new_token;
+            }
+
+            const list = container.querySelector('.js-dir-comments-list');
+            if (list) {
+                list.innerHTML = data.html;
+            }
+
+            // Actualizar contadores en el DOM
+            container.querySelectorAll('.dir_total_comments')
+                .forEach(el => {
+                    el.textContent = data.total + ' comments';
+                });
+
+            const linkCounter = document.querySelector(
+                '.js-dir-comments[data-link-id="' + linkId + '"] strong'
+            );
+
+            if (linkCounter) {
+                linkCounter.textContent = data.total + ' comments';
+            }
+
+            form.reset();
+        })
+        .finally(() => {
+            if (typeof phpbb.loading_indicator !== 'undefined') phpbb.loading_indicator.hide();
+        });
+    });
+
+    // Paginación de comentarios vía AJAX
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest('.pagination a');
+        if (!link) return;
+
+        const container = link.closest('.dir-comments-container');
+        if (!container) return;
+
+        e.preventDefault();
+
+        const ajaxBox = container.querySelector('.js-dir-comments-ajax');
+        if (!ajaxBox) return;
+
+        if (typeof phpbb.loading_indicator !== 'undefined') phpbb.loading_indicator.show();
+
+        const url = link.href + (link.href.includes('?') ? '&ajax=1' : '?ajax=1');
+
+        fetch(url, { credentials: 'same-origin' })
+            .then(r => r.text())
+            .then(html => {
+                const tmp = document.createElement('div');
+                tmp.innerHTML = html;
+
+                const newAjaxBox = tmp.querySelector('.js-dir-comments-ajax');
+                if (!newAjaxBox) return;
+
+                ajaxBox.replaceWith(newAjaxBox);
+            })
+            .finally(() => {
+                if (typeof phpbb.loading_indicator !== 'undefined') phpbb.loading_indicator.hide();
+            });
+    });
+
+})();

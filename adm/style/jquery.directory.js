@@ -1,6 +1,6 @@
 /**
 * @package phpBB Directory
-* @copyright (c) 2014 ErnadoO
+* @copyright (c) 2025 nextgen
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 

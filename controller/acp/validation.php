@@ -3,14 +3,14 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\controller\acp;
+namespace nextgen\phpbbdirectory\controller\acp;
 
-use \ernadoo\phpbbdirectory\core\helper;
+use \nextgen\phpbbdirectory\core\helper;
 
 class validation extends helper
 {
@@ -41,10 +41,10 @@ class validation extends helper
 	/** @var \phpbb\user */
 	protected $user;
 
-	/** @var \ernadoo\phpbbdirectory\core\categorie */
+	/** @var \nextgen\phpbbdirectory\core\categorie */
 	protected $categorie;
 
-	/** @var \ernadoo\phpbbdirectory\core\link */
+	/** @var \nextgen\phpbbdirectory\core\link */
 	protected $link;
 
 	/** @var string phpBB root path */
@@ -80,12 +80,12 @@ class validation extends helper
 	* @param \phpbb\request\request								$request			Request object
 	* @param \phpbb\template\template							$template			Template object
 	* @param \phpbb\user										$user				User object
-	* @param \ernadoo\phpbbdirectory\core\categorie				$categorie			PhpBB Directory extension categorie object
-	* @param \ernadoo\phpbbdirectory\core\link					$link				PhpBB Directory extension link object
+	* @param \nextgen\phpbbdirectory\core\categorie				$categorie			PhpBB Directory extension categorie object
+	* @param \nextgen\phpbbdirectory\core\link					$link				PhpBB Directory extension link object
 	* @param string												$root_path			phpBB root path
 	* @param string												$php_ext   			phpEx
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\pagination $pagination, \phpbb\language\language $language, \phpbb\log\log $log, \phpbb\notification\manager $notification, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \ernadoo\phpbbdirectory\core\categorie $categorie, \ernadoo\phpbbdirectory\core\link $link, $root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\pagination $pagination, \phpbb\language\language $language, \phpbb\log\log $log, \phpbb\notification\manager $notification, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \nextgen\phpbbdirectory\core\categorie $categorie, \nextgen\phpbbdirectory\core\link $link, $root_path, $php_ext)
 	{
 		$this->config		= $config;
 		$this->db			= $db;
@@ -269,14 +269,14 @@ class validation extends helper
 
 		foreach ($this->links_data as $row)
 		{
-			$this->notification->mark_notifications('ernadoo.phpbbdirectory.notification.type.directory_website_in_queue', (int) $row['link_id'], false);
+			$this->notification->mark_notifications('nextgen.phpbbdirectory.notification.type.directory_website_in_queue', (int) $row['link_id'], false);
 
 			// New notification system can't send mail to an anonymous user with an email adress storage in another table than phpbb_users
 			if ($row['link_user_id'] == ANONYMOUS)
 			{
 				$username = $email = $row['link_guest_email'];
 
-				$messenger->template('@ernadoo_phpbbdirectory/directory_website_'.$this->action, $row['user_lang']);
+				$messenger->template('@nextgen_phpbbdirectory/directory_website_'.$this->action, $row['user_lang']);
 				$messenger->to($email, $username);
 
 				$messenger->assign_vars(array(
@@ -292,11 +292,11 @@ class validation extends helper
 					'user_from'			=> (int) $row['link_user_id'],
 					'link_id'			=> (int) $row['link_id'],
 					'link_name'			=> $row['link_name'],
-					'cat_name'			=> \ernadoo\phpbbdirectory\core\categorie::getname((int) $row['link_cat']),
+					'cat_name'			=> \nextgen\phpbbdirectory\core\categorie::getname((int) $row['link_cat']),
 					'cat_id'			=> (int) $row['link_cat'],
 				);
 
-				$this->notification->add_notifications('ernadoo.phpbbdirectory.notification.type.directory_website_'.$this->action, $notification_data);
+				$this->notification->add_notifications('nextgen.phpbbdirectory.notification.type.directory_website_'.$this->action, $notification_data);
 			}
 		}
 	}
@@ -422,10 +422,10 @@ class validation extends helper
 			'link_name'			=> $row['link_name'],
 			'link_url'			=> $row['link_url'],
 			'link_description'	=> preg_replace('/(\[.*?\])(.*?)(\[\/.*?\])/si', '\\1', $row['link_description']),
-			'cat_name'			=> \ernadoo\phpbbdirectory\core\categorie::getname((int) $row['link_cat']),
+			'cat_name'			=> \nextgen\phpbbdirectory\core\categorie::getname((int) $row['link_cat']),
 			'cat_id'			=> (int) $row['link_cat'],
 		);
 
-		$this->notification->add_notifications('ernadoo.phpbbdirectory.notification.type.directory_website', $notification_data);
+		$this->notification->add_notifications('nextgen.phpbbdirectory.notification.type.directory_website', $notification_data);
 	}
 }

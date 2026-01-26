@@ -3,19 +3,19 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\cron\task\core;
+namespace nextgen\phpbbdirectory\cron\task\core;
 
 class prune_categorie extends \phpbb\cron\task\base implements \phpbb\cron\task\parametrized
 {
 	/** @var \phpbb\config\config */
 	protected $config;
 
-	/** @var \ernadoo\phpbbdirectory\core\cron */
+	/** @var \nextgen\phpbbdirectory\core\cron */
 	protected $dir_cron;
 
 	/** @var array */
@@ -25,9 +25,9 @@ class prune_categorie extends \phpbb\cron\task\base implements \phpbb\cron\task\
 	* Constructor.
 	*
 	* @param \phpbb\config\config 				$config			Config object
-	* @param \ernadoo\phpbbdirectory\core\cron	$directory_cron	PhpBB Directory extension link object
+	* @param \nextgen\phpbbdirectory\core\cron	$directory_cron	PhpBB Directory extension link object
 	*/
-	public function __construct(\phpbb\config\config $config, \ernadoo\phpbbdirectory\core\cron $directory_cron)
+	public function __construct(\phpbb\config\config $config, \nextgen\phpbbdirectory\core\cron $directory_cron)
 	{
 		$this->config 		= $config;
 		$this->dir_cron 	= $directory_cron;

@@ -1,35 +1,38 @@
 {
-	"name": "ernadoo/phpbbdirectory",
-	"type": "phpbb-extension",
-	"description": "That extension adds a links directory at your phpBB forum.",
-	"homepage": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory",
-	"version": "2.0.0-RC3",
-	"time": "2015-03-08",
-	"license": "GPL-2.0",
-	"authors": [
-		{
-			"name": "Erwan Nader",
-			"email": "ernadoo@phpbb-services.com",
-			"homepage": "http://www.phpbb-services.com",
-			"role": "Lead Developer"
-		}
-	],
-	"require": {
-		"php": ">=5.6",
-		"E1379/speaking-url": "dev-master"
-	},
-	"require-dev": {
-		"satooshi/php-coveralls": "~1.0"
-	},
-	"extra": {
-		"display-name": "phpBB Directory",
-		"soft-require": {
-            "phpbb/phpbb": ">=3.2.0-b1,<4.0.0@dev"
-		},
-		"version-check": {
-			"host": "https://raw.githubusercontent.com",
-			"directory": "/nextgen-solutions-gt/ext-phpbb-directory/master",
-			"filename": "phpbbdirectory_versions.json"
-		}
-	}
+    "name": "nextgen/phpbbdirectory",
+    "type": "phpbb-extension",
+    "description": "This extension adds a comprehensive links directory to your phpBB forum with local banner storage and cURL optimization.",
+    "homepage": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory",
+    "version": "2.0.0-RC4",
+    "time": "2026-01-25",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Melvin Garcia",
+            "email": "contact@nextgen.gt",
+            "homepage": "http://nextgen.gt",
+            "role": "Developer"
+        },
+        {
+            "name": "Erwan Nader",
+            "email": "ernadoo@phpbb-services.com",
+            "homepage": "https://www.phpbb-services.com/",
+            "role": "Past Contributor"
+        }        
+    ],
+    "require": {
+        "php": ">=7.1",
+        "E1379/speaking-url": "dev-master"
+    },
+    "extra": {
+        "display-name": "phpBB Directory",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.2.0,<4.0.0@dev"
+        },
+        "version-check": {
+            "host": "https://raw.githubusercontent.com",
+            "directory": "/nextgen-solutions-gt/ext-phpbb-directory/master",
+            "filename": "phpbbdirectory_versions.json"
+        }
+    }
 }

@@ -3,7 +3,7 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
@@ -34,6 +34,12 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 
 $lang = array_merge($lang, array(
+	'DOWNLOAD_LATEST' 									=> 'Download the latest version here',
+	'DIR_CURRENT_VERSION'   						    => 'Current version',
+    'DIR_LATEST_VERSION'						        => 'Latest version',
+    'DIRECTORY_UP_TO_DATE'						        => 'Your version of the phpBB Directory is updated, no new update is available.',
+    'DIRECTORY_OUTDATED' 						        => 'A new version of phpBB Directory is available! Please update your installation.',
+
 	'DIR_ARE_WATCHING_CAT'					=> 'You have subscribed to be notified of new website in this categorie.',
 	'DIR_BANNER_DISALLOWED_CONTENT'			=> 'The transfer has been interrupted because the file had been identified as a potential threat.',
 	'DIR_BANNER_DISALLOWED_EXTENSION'		=> 'This file can’t be shown because the extension <strong>%s</strong> is not allowed.',
@@ -202,4 +208,5 @@ $lang = array_merge($lang, array(
 
 	'WRONG_DATA_RSS'						=> 'The RSS feeds must be a valid URL, including the protocol. For example http://www.example.com/.',
 	'WRONG_DATA_WEBSITE'					=> 'The website address has to be a valid URL, including the protocol. For example http://www.example.com/.',
+	'DIR_BANNER_URL'						=> 'Or banner URL',
 ));

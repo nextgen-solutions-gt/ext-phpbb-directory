@@ -1,10 +1,10 @@
 services:
-    ernadoo.phpbbdirectory.cron.task.core.prune_categorie:
-        class: ernadoo\phpbbdirectory\cron\task\core\prune_categorie
+    nextgen.phpbbdirectory.cron.task.core.prune_categorie:
+        class: nextgen\phpbbdirectory\cron\task\core\prune_categorie
         arguments:
             - '@config'
-            - '@ernadoo.phpbbdirectory.core.cron'
+            - '@nextgen.phpbbdirectory.core.cron'
         calls:
-            - [set_name, [ernadoo.phpbbdirectory.cron.task.core.prune_categorie]]
+            - [set_name, [nextgen.phpbbdirectory.cron.task.core.prune_categorie]]
         tags:
             - { name: cron.task }

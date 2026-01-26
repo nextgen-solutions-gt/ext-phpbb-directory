@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\routing;
+namespace nextgen\phpbbdirectory\routing;
 
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
@@ -48,7 +48,7 @@ class categories_loader extends Loader
 		$routes = new RouteCollection();
 
 		$defaults = array(
-			'_controller'	=> 'ernadoo.phpbbdirectory.controller.categories:view_route',
+			'_controller'	=> 'nextgen.phpbbdirectory.controller.categories:view_route',
 			'page'			=> 1,
 			'sort_days'		=> 0,
 			'sort_key'		=> '',
@@ -70,7 +70,7 @@ class categories_loader extends Loader
 			$path = 'directory/' . $row['cat_route'] . '/{page}/{sort_days}/{sort_key}/{sort_dir}';
 
 			$route = new Route($path, $defaults, $requirements);
-			$routes->add('ernadoo_phpbbdirectory_dynamic_route_' . $row['cat_id'], $route);
+			$routes->add('nextgen_phpbbdirectory_dynamic_route_' . $row['cat_id'], $route);
 		}
 		$this->db->sql_freeresult();
 
@@ -84,6 +84,6 @@ class categories_loader extends Loader
 	*/
 	public function supports($resource, $type = null)
 	{
-		return $type === 'ernadoo_phpbbdirectory_route';
+		return $type === 'nextgen_phpbbdirectory_route';
 	}
 }

@@ -3,12 +3,12 @@
  *
  * phpBB Directory extension for the phpBB Forum Software package.
  *
- * @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+ * @copyright (c) 2025 nextgen <http://nextgen.gt>
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
 
-namespace ernadoo\phpbbdirectory\tests\controller
+namespace nextgen\phpbbdirectory\tests\controller
 {
 	/**
 	 * @group controller
@@ -30,7 +30,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 
 			parent::setUp();
 
-			$this->get_test_case_helpers()->copy_dir(__DIR__ . '/fixtures/banners/', $phpbb_root_path . 'files/ext/ernadoo/phpbbdirectory/banners/');
+			$this->get_test_case_helpers()->copy_dir(__DIR__ . '/fixtures/banners/', $phpbb_root_path . 'files/ext/nextgen/phpbbdirectory/banners/');
 
 			$this->config['dir_visual_confirm']	= 1;
 			$this->config['captcha_plugin'] 	= 'core.captcha.plugins.nogd';
@@ -46,7 +46,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 			$this->user->data['user_id']		= $user_id;
 			$this->user->data['is_registered']	= ($this->user->data['user_id'] != ANONYMOUS && ($this->user->data['user_type'] == USER_NORMAL || $this->user->data['user_type'] == USER_FOUNDER)) ? true : false;
 
-				$controller = new \ernadoo\phpbbdirectory\controller\links(
+				$controller = new \nextgen\phpbbdirectory\controller\links(
 					$this->db,
 					$this->config,
 					$this->lang,
@@ -476,7 +476,7 @@ namespace ernadoo\phpbbdirectory\tests\controller
 		{
 			global $phpbb_root_path;
 
-			$this->get_test_case_helpers()->empty_dir($phpbb_root_path . 'files/ext/ernadoo/phpbbdirectory/banners/');
+			$this->get_test_case_helpers()->empty_dir($phpbb_root_path . 'files/ext/nextgen/phpbbdirectory/banners/');
 
 			parent::tearDown();
 		}

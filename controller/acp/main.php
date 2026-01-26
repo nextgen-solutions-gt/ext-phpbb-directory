@@ -3,14 +3,14 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\controller\acp;
+namespace nextgen\phpbbdirectory\controller\acp;
 
-use \ernadoo\phpbbdirectory\core\helper;
+use \nextgen\phpbbdirectory\core\helper;
 
 class main extends helper
 {
@@ -28,6 +28,12 @@ class main extends helper
 
 	/** @var string Custom form action */
 	protected $u_action;
+	
+	/** @var string phpBB root path */
+    protected $root_path;
+	
+	/** @var \phpbb\config\config */
+    protected $config;
 
 	/**
 	* Constructor
@@ -37,12 +43,14 @@ class main extends helper
 	* @param \phpbb\request\request					$request	Request object
 	* @param \phpbb\template\template				$template	Template object
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\language\language $language, \phpbb\request\request $request, \phpbb\template\template $template)
+	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\language\language $language, \phpbb\request\request $request, \phpbb\template\template $template, $root_path, \phpbb\config\config $config)
 	{
 		$this->db			= $db;
 		$this->language		= $language;
 		$this->template		= $template;
 		$this->request		= $request;
+		$this->root_path    = $root_path;
+		$this->config	    = $config;
 	}
 
 	/**
@@ -138,31 +146,74 @@ class main extends helper
 		$total_clicks = (int) $this->db->sql_fetchfield('nb_clicks');
 		$this->db->sql_freeresult($result);
 
-		$banners_dir_size = 0;
+		// Click number calculating
+        $sql = 'SELECT SUM(link_view) AS nb_clicks
+            FROM ' . $this->links_table;
+        $result = $this->db->sql_query($sql);
+        $total_clicks = (int) $this->db->sql_fetchfield('nb_clicks');
+        $this->db->sql_freeresult($result);
 
-		$banners_path = $this->get_banner_path();
+        // --- CÁLCULO DE TAMAÑO DE BANNERS CORREGIDO ---
+        $banners_dir_size = 0;
+        $banners_path = $this->root_path . 'images/directory/banners/'; // Ruta directa
+        
+        // Usamos la función nativa de phpBB para listar archivos de forma segura
+        $imglist = filelist($banners_path);
 
-		if ($banners_dir = @opendir($banners_path))
+        if (!empty($imglist['']))
+        {
+            foreach ($imglist[''] as $file)
+            {
+                // Ignoramos archivos de sistema, protección y carpetas
+                if (strpos($file, 'index.') === false && strpos($file, '.htaccess') === false)
+                {
+                    $full_path = $banners_path . $file;
+                    if (file_exists($full_path))
+                    {
+                        $banners_dir_size += @filesize($full_path);
+                    }
+                }
+            }
+            // get_formatted_filesize es una función nativa de phpBB
+            $banners_dir_size = get_formatted_filesize($banners_dir_size);
+        }
+        else
+        {
+            $banners_dir_size = $this->language->lang('NOT_AVAILABLE');
+        }
+
+        $total_orphan = $this->_orphan_files();
+		
+		// 1. Obtener versión local desde composer.json
+		$composer_path = $this->root_path . 'ext/nextgen/phpbbdirectory/composer.json';
+		$current_version = '0.0.0';
+
+		if (file_exists($composer_path))
 		{
-			while (($file = readdir($banners_dir)) !== false)
+			$composer_data = json_decode(file_get_contents($composer_path), true);
+			$current_version = (isset($composer_data['version'])) ? $composer_data['version'] : '0.0.0';
+		}
+
+		// 2. Leer versión remota desde GitHub
+		$remote_url = 'https://raw.githubusercontent.com/nextgen-solutions-gt/ext-phpbb-directory/master/phpbbdirectory_versions.json';
+		$latest_version = $current_version; // Por defecto igual a la local si falla el remoto
+		$download_url = '';
+
+		$remote_file = @file_get_contents($remote_url);
+		if ($remote_file)
+		{
+			$versions_data = json_decode($remote_file, true);
+			// Accedemos a la rama 3.3 de unstable según tu JSON
+			if (isset($versions_data['unstable']['3.3']['current']))
 			{
-				if ($file[0] != '.' && $file[0] != '..' && strpos($file, 'index.') === false && strpos($file, '.db') === false)
-				{
-					$banners_dir_size += filesize($banners_path . $file);
-				}
+				$latest_version = $versions_data['unstable']['3.3']['current'];
+				$download_url = $versions_data['unstable']['3.3']['download'];
 			}
-			closedir($banners_dir);
-
-			$banners_dir_size = get_formatted_filesize($banners_dir_size);
-		}
-		else
-		{
-			// Couldn't open banners dir.
-			$banners_dir_size = $this->language->lang('NOT_AVAILABLE');
 		}
 
-		$total_orphan = $this->_orphan_files();
-
+		// 3. Cálculo de la comparación (IMPORTANTE: Definir la variable aquí)
+		$up_to_date = version_compare($current_version, $latest_version, '>=');
+		
 		$this->template->assign_vars(array(
 			'U_ACTION'			=> $this->u_action,
 
@@ -174,6 +225,11 @@ class main extends helper
 			'TOTAL_CLICKS'		=> $total_clicks,
 			'TOTAL_ORPHANS'		=> $total_orphan,
 			'BANNERS_DIR_SIZE'	=> $banners_dir_size,
+			'U_ACTION'          => $this->u_action,
+			'CURRENT_VERSION'   => $current_version,
+			'LATEST_VERSION'    => $latest_version,
+			'U_DOWNLOAD_LATEST' => $download_url,
+			'S_UP_TO_DATE'      => $up_to_date,
 		));
 	}
 
@@ -258,56 +314,57 @@ class main extends helper
 		$this->u_action = $u_action;
 	}
 
-	/**
-	* Get orphan banners
-	*
-	* @param	bool		$delete	True if we want to delete banners, else false
-	* @return	null|int	Number of orphan files, else null
-	*/
-	private function _orphan_files($delete = false)
-	{
-		$banner_path = $this->get_banner_path();
-		$imglist = filelist($banner_path);
-		$physical_files = $logical_files = $orphan_files = array();
+/**
+* Get and clean orphan banners
+*
+* @param    bool        $delete    True if we want to delete banners, else false
+* @return   int|null    Number of orphan files
+*/
+private function _orphan_files($delete = false)
+{
+    // USAR LA RUTA FÍSICA REAL
+    $banner_path = $this->root_path . 'images/directory/banners/';
+    $imglist = filelist($banner_path);
+    $physical_files = $logical_files = $orphan_files = array();
 
-		if (!empty($imglist['']))
-		{
-			$imglist = array_values($imglist);
-			$imglist = $imglist[0];
+    if (!empty($imglist['']))
+    {
+        $physical_files = array_values($imglist['']);
 
-			foreach ($imglist as $img)
-			{
-				$physical_files[] = $img;
-			}
-			$sql = 'SELECT link_banner FROM ' . $this->links_table . "
-				WHERE link_banner <> ''";
-			$result = $this->db->sql_query($sql);
+        $sql = 'SELECT link_banner FROM ' . $this->links_table . "
+                WHERE link_banner <> ''";
+        $result = $this->db->sql_query($sql);
 
-			while ($row = $this->db->sql_fetchrow($result))
-			{
-				if (!preg_match('/^(http:\/\/|https:\/\/|ftp:\/\/|ftps:\/\/|www\.).+/si', $row['link_banner']))
-				{
-					$logical_files[] = basename($row['link_banner']);
-				}
-			}
-			$this->db->sql_freeresult($result);
+        while ($row = $this->db->sql_fetchrow($result))
+        {
+            // Limpiamos el nombre para comparar solo el nombre del archivo
+            $logical_files[] = basename($row['link_banner']);
+        }
+        $this->db->sql_freeresult($result);
 
-			$orphan_files = array_diff($physical_files, $logical_files);
-		}
+        // Comparamos arrays
+        $orphan_files = array_diff($physical_files, $logical_files);
+        
+        // Excluimos archivos protegidos
+        $protected = array('index.htm', 'index.html', '.htaccess');
+        $orphan_files = array_diff($orphan_files, $protected);
+    }
 
-		if (!$delete)
-		{
-			return sizeof($orphan_files);
-		}
+    if (!$delete)
+    {
+        return sizeof($orphan_files);
+    }
 
-		$dh = @opendir($banner_path);
-		while (($file = readdir($dh)) !== false)
-		{
-			if (in_array($file, $orphan_files))
-			{
-				@unlink($this->get_banner_path($file));
-			}
-		}
-		closedir($dh);
-	}
+    $deleted_count = 0;
+    foreach ($orphan_files as $file)
+    {
+        // Usamos la ruta completa para borrar
+        if (@unlink($banner_path . $file))
+        {
+            $deleted_count++;
+        }
+    }
+
+    return $deleted_count;
+}
 }

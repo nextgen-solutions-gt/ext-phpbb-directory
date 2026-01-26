@@ -3,7 +3,7 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
@@ -22,7 +22,7 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'DIRECTORY'			=> 'Directory',
+	'DIRECTORY'											=> 'Directory',
 
 	'NOTIFICATION_DIR_NEW'								=> '%1$s posted a new website "%2$s" in the categorie "%3$s".',
 	'NOTIFICATION_DIR_UCP'								=> 'PhpBB Directory Notifications',

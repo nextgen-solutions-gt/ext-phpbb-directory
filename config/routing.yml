@@ -1,100 +1,131 @@
-ernadoo_phpbbdirectory_base_controller:
-    path: /directory
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.categories:base }
+nextgen_phpbbdirectory_comment_ajax_post:
+    path: /directory/link/{link_id}/comment/ajax
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.comments:ajax_post
+    requirements:
+        link_id: \d+
 
-ernadoo_phpbbdirectory_dynamic_controller:
-    resource: ernadoo_phpbbdirectory_route_controller
-    type: ernadoo_phpbbdirectory_route
+nextgen_phpbbdirectory_base_controller:
+    path: /directory
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.categories:base
+
+# Esta ruta carga rutas dinámicas usando el servicio "routing.loader" definido en services.yml
+nextgen_phpbbdirectory_dynamic_controller:
+    resource: nextgen_phpbbdirectory_route_controller
+    type: nextgen_phpbbdirectory_route
 
 # Legacy routing
-ernadoo_phpbbdirectory_page_controller:
+nextgen_phpbbdirectory_page_controller:
     path: /directory/categorie/{cat_id}/{page}/{sort_days}/{sort_key}/{sort_dir}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.categories:view, page: 1 }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.categories:view
+        page: 1
     requirements:
         cat_id: \d+
         page: \d+
 
-ernadoo_phpbbdirectory_suscribe_controller:
+nextgen_phpbbdirectory_suscribe_controller:
     path: /directory/categorie/{cat_id}/{mode}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.categories:view_route, page: 1, sort_days: 0, sort_key: '', sort_dir: '' }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.categories:view_route
+        page: 1
+        sort_days: 0
+        sort_key: ''
+        sort_dir: ''
     requirements:
         cat_id: \d+
         mode: watch|unwatch
 
-ernadoo_phpbbdirectory_new_controller:
+nextgen_phpbbdirectory_new_controller:
     path: /directory/categorie/{cat_id}/link/new
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.links:new_link }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.links:new_link
     requirements:
         cat_id: \d+
 
-ernadoo_phpbbdirectory_edit_controller:
+nextgen_phpbbdirectory_edit_controller:
     path: /directory/categorie/{cat_id}/link/edit/{link_id}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.links:edit_link }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.links:edit_link
     requirements:
         cat_id: \d+
         link_id: \d+
 
-ernadoo_phpbbdirectory_delete_controller:
+nextgen_phpbbdirectory_delete_controller:
     path: /directory/categorie/{cat_id}/link/delete/{link_id}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.links:delete_link }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.links:delete_link
     requirements:
         cat_id: \d+
         link_id: \d+
 
-ernadoo_phpbbdirectory_view_controller:
+nextgen_phpbbdirectory_view_controller:
     path: /directory/link/view/{link_id}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.links:view_link }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.links:view_link
     requirements:
         link_id: \d+
 
-ernadoo_phpbbdirectory_vote_controller:
+nextgen_phpbbdirectory_vote_controller:
     path: /directory/categorie/{cat_id}/link/vote/{link_id}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.links:vote_link }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.links:vote_link
     requirements:
         cat_id: \d+
         link_id: \d+
 
-ernadoo_phpbbdirectory_comment_view_controller:
+nextgen_phpbbdirectory_comment_view_controller:
     path: /directory/link/{link_id}/comment/{page}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.comments:view, page: 1 }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.comments:view
+        page: 1
     requirements:
         link_id: \d+
         page: \d+
 
-ernadoo_phpbbdirectory_comment_new_controller:
+nextgen_phpbbdirectory_comment_new_controller:
     path: /directory/link/{link_id}/comment/new
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.comments:new_comment }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.comments:new_comment
     requirements:
         link_id: \d+
 
-ernadoo_phpbbdirectory_comment_edit_controller:
+nextgen_phpbbdirectory_comment_edit_controller:
     path: /directory/link/{link_id}/comment/edit/{comment_id}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.comments:edit_comment }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.comments:edit_comment
     requirements:
         link_id: \d+
         comment_id: \d+
 
-ernadoo_phpbbdirectory_comment_delete_controller:
+nextgen_phpbbdirectory_comment_delete_controller:
     path: /directory/link/{link_id}/comment/delete/{comment_id}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.comments:delete_comment }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.comments:delete_comment
     requirements:
         link_id: \d+
         comment_id: \d+
 
-ernadoo_phpbbdirectory_ajax_date_controller:
+nextgen_phpbbdirectory_ajax_date_controller:
     path: /directory/ajax_get_date
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.categories:return_date }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.categories:return_date
 
-ernadoo_phpbbdirectory_ajax_slug_controller:
+nextgen_phpbbdirectory_ajax_slug_controller:
     path: /directory/ajax_get_slug
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.categories:return_slug }
-    
-ernadoo_phpbbdirectory_banner_controller:
-    path: /directory/banner/{banner_img}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.links:return_banner }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.categories:return_slug
 
-ernadoo_phpbbdirectory_search_controller:
+nextgen_phpbbdirectory_banner_route:
+    path: /directory/banner/{banner_img}
+    defaults: 
+        _controller: nextgen.phpbbdirectory.controller.links:return_banner
+
+nextgen_phpbbdirectory_search_controller:
     path: /directory/search/{page}
-    defaults: { _controller: ernadoo.phpbbdirectory.controller.search:main, page: 1 }
+    defaults:
+        _controller: nextgen.phpbbdirectory.controller.search:main
+        page: 1
     requirements:
         page: \d+

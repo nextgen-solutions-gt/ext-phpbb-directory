@@ -3,12 +3,12 @@
  *
  * phpBB Directory extension for the phpBB Forum Software package.
  *
- * @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+ * @copyright (c) 2025 nextgen <http://nextgen.gt>
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
 
-namespace ernadoo\phpbbdirectory\tests\controller;
+namespace nextgen\phpbbdirectory\tests\controller;
 
 /**
  * @group controller
@@ -42,7 +42,7 @@ class phpbbdirectory_search_test extends controller_base
 		$this->user->data['user_id']		= $user_id;
 		$this->user->data['is_registered']	= ($this->user->data['user_id'] != ANONYMOUS && ($this->user->data['user_type'] == USER_NORMAL || $this->user->data['user_type'] == USER_FOUNDER)) ? true : false;
 
-			$controller = new \ernadoo\phpbbdirectory\controller\search(
+			$controller = new \nextgen\phpbbdirectory\controller\search(
 				$this->db,
 				$this->config,
 				$this->lang,

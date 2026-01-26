@@ -49,7 +49,7 @@
 			</ul>
 			<div class="bg1">
 				<dl class="linkinfos">
-					<dt><a href="{{ site.U_LINK }}" onclick="window.open('{{ site.U_VIEW|e('js') }}'); return false;"><img src="{{ site.U_THUMB }}" alt="{{ lang('DIR_THUMB') }}" ></a></dt>
+					<dt><div class="dir-thumb"><a href="{{ site.U_LINK }}" onclick="window.open('{{ site.U_VIEW|e('js') }}'); return false;"><img src="{{ site.U_THUMB }}" alt="{{ lang('DIR_THUMB') }}" ></a></div></dt>
 					{% if site.NOTE %}
 						<dd>{{ lang('DIR_NOTE') }}{{ lang('COLON') }} <strong><span id="dir_note{{ site.LINK_ID }}">{{ site.NOTE }}</span></strong></dd>
 						<dd class="responsive-hide">(<span id="dir_vote{{ site.LINK_ID }}">{{ site.NB_VOTE }}</span>)</dd>
@@ -83,12 +83,17 @@
 					<div class="content">{{ site.DESCRIPTION }}</div>
 					{% if site.BANNER %}<div id="sig{{ site.LINK_ID }}" class="signature">{{ site.BANNER }}</div>{% endif %}
 				</div>
-				<div class="back2top bg2">
-					{% if site.U_COMMENT %}<a href="{{ site.U_COMMENT }}" class="commentlink" ><strong>{{ site.NB_COMMENT }}</strong></a> | {% endif %}<span class="responsive-hide"><strong>{{ lang('DIR_USER_PROP') }} </span>{{ site.USER }}</strong>{% if site.TIME %} &raquo; {{ site.TIME }}{% endif %}
+				<div class="back2top">
+				{% if site.U_COMMENT %}
+					<a href="{{ site.U_COMMENT }}?page=1" class="commentlink js-dir-comments dir-comments-toggle" data-link-id="{{ site.LINK_ID }}"><strong>{{ site.NB_COMMENT }}</strong></a>
+					<div class="dir-comments-container" id="dir-comments-{{ site.LINK_ID }}"style="display:none"></div> | 
+				{% endif %}				
+				<span class="responsive-hide"><strong>{{ lang('DIR_USER_PROP') }} </span>{{ site.USER }}</strong>{% if site.TIME %} &raquo; {{ site.TIME }}{% endif %}
 					<a href="#top" class="top" title="{{ lang('BACK_TO_TOP') }}" style="margin:0">
 						<i class="icon fa-chevron-circle-up fa-fw icon-gray" aria-hidden="true"></i>
 						<span class="sr-only">{{ lang('BACK_TO_TOP') }}</span>
 					</a>
+			
 				</div>
 			</div>
 		</div>

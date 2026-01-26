@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\controller\acp;
+namespace nextgen\phpbbdirectory\controller\acp;
 
 class settings
 {
@@ -110,67 +110,86 @@ class settings
 		}
 	}
 
-	/**
-	* Validate config vars and update config table if needed
-	*
-	* @return null
-	*/
-	public function process()
-	{
-		$submit	= ($this->request->is_set_post('submit')) ? true : false;
+/**
+    * Validate config vars and update config table if needed
+    *
+    * @return null
+    */
+    public function process()
+    {
+        $submit = $this->request->is_set_post('submit');
+        $error  = array();
+        
+        // Obtenemos la configuración actual
+        $this->new_config = $this->config;
+        
+        // Obtenemos los nuevos valores del formulario
+        // Nota: Asegúrate que en tu HTML los inputs se llamen config[nombre_var]
+        $cfg_array = $this->request->variable('config', array('' => ''), true);
 
-		$this->new_config = $this->config;
-		$cfg_array = ($this->request->is_set('config')) ? $this->request->variable('config', array('' => ''), true) : $this->new_config;
-		$error = array();
+        // Validamos las variables según las reglas definidas en el array 'vars'
+        validate_config_vars($this->display_vars['vars'], $cfg_array, $error);
 
-		// We validate the complete config if whished
-		validate_config_vars($this->display_vars['vars'], $cfg_array, $error);
+        // Si hay errores de validación, cancelamos el envío
+        if (sizeof($error))
+        {
+            $submit = false;
+        }
 
-		// Do not write values if there is an error
-		if (sizeof($error))
-		{
-			$submit = false;
-		}
+        if ($submit)
+        {
+            foreach ($this->display_vars['vars'] as $config_name => $null)
+            {
+                // Saltamos leyendas o variables que no vengan en el post
+                if (!isset($cfg_array[$config_name]) || strpos($config_name, 'legend') !== false)
+                {
+                    continue;
+                }
 
-		// We go through the display_vars to make sure no one is trying to set variables he/she is not allowed to...
-		foreach ($this->display_vars['vars'] as $config_name => $null)
-		{
-			if (!isset($cfg_array[$config_name]) || strpos($config_name, 'legend') !== false)
-			{
-				continue;
-			}
+                $config_value = $cfg_array[$config_name];
 
-			$this->new_config[$config_name] = $config_value = $cfg_array[$config_name];
+                // --- OPTIMIZACIÓN Y CORRECCIÓN DE TIPOS ---
 
-			if ($config_name == 'dir_banner_filesize')
-			{
-				$size_var = $this->request->variable($config_name, '');
-				$this->new_config[$config_name] = $config_value = ($size_var == 'kb') ? round($config_value * 1024) : (($size_var == 'mb') ? round($config_value * 1048576) : $config_value);
-			}
+                // 1. Forzamos medidas del banner a enteros (esto asegura que funcionen)
+                if ($config_name == 'dir_banner_width' || $config_name == 'dir_banner_height')
+                {
+                    $config_value = (int) $config_value;
+                }
 
-			if ($submit)
-			{
-				$this->config->set($config_name, $config_value);
-			}
-		}
+                // 2. Corrección lógica de Filesize (KB/MB)
+                if ($config_name == 'dir_banner_filesize')
+                {
+                    // Buscamos un campo extra en el form llamado 'dir_banner_filesize_unit'
+                    $unit = $this->request->variable($config_name . '_unit', 'kb');
+                    
+                    if ($unit == 'kb')
+                    {
+                        $config_value = round($config_value * 1024);
+                    }
+                    else if ($unit == 'mb')
+                    {
+                        $config_value = round($config_value * 1048576);
+                    }
+                }
 
-		if ($submit)
-		{
-			$this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'DIR_CONFIG_SETTINGS');
+                // Guardamos en la base de datos
+                $this->config->set($config_name, $config_value);
+                $this->new_config[$config_name] = $config_value;
+            }
 
-			trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
-		}
+            $this->log->add('admin', $this->user->data['user_id'], $this->user->ip, 'DIR_CONFIG_SETTINGS');
+            trigger_error($this->language->lang('CONFIG_UPDATED') . adm_back_link($this->u_action));
+        }
 
-		$this->template->assign_vars(array(
-			'L_TITLE'			=> $this->language->lang($this->display_vars['title']),
-			'L_TITLE_EXPLAIN'	=> $this->language->lang($this->display_vars['title'] . '_EXPLAIN'),
-
-			'S_ERROR'			=> (sizeof($error)) ? true : false,
-			'ERROR_MSG'			=> implode('<br />', $error),
-
-			'U_ACTION'			=> $this->u_action)
-		);
-	}
+        // Asignación de variables a la plantilla
+        $this->template->assign_vars(array(
+            'L_TITLE'         => $this->language->lang($this->display_vars['title']),
+            'L_TITLE_EXPLAIN' => $this->language->lang($this->display_vars['title'] . '_EXPLAIN'),
+            'S_ERROR'         => (sizeof($error)) ? true : false,
+            'ERROR_MSG'       => implode('<br />', $error),
+            'U_ACTION'        => $this->u_action,
+        ));
+    }
 
 	/**
 	* Set page url

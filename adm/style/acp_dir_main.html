@@ -1,7 +1,39 @@
 {% include 'overall_header.html' %}
 
 <a id="maincontent"></a>
+{% if S_UP_TO_DATE %}
+    <div class="successbox">
+        <p>{{ lang('DIRECTORY_UP_TO_DATE') }}</p>
+    </div>
+{% else %}
+    <div class="errorbox">
+        <p>{{ lang('DIRECTORY_OUTDATED') }} 
+            {% if U_DOWNLOAD_LATEST %}
+                <a href="{{ U_DOWNLOAD_LATEST }}"><strong>{{ lang('DOWNLOAD_LATEST') }}</strong></a>
+            {% endif %}
+        </p>
+    </div>
+{% endif %}
 
+<table cellspacing="1">
+    <thead>
+    <tr>
+        <th>{{ lang('VERSION_CHECK') }}</th>
+        <th>{{ lang('VALUE') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="row1">
+        <td>{{ lang('DIR_CURRENT_VERSION') }}{{ lang('COLON') }}</td>
+        <td><strong>{{ CURRENT_VERSION }}</strong></td>
+    </tr>
+    <tr class="row2">
+        <td>{{ lang('DIR_LATEST_VERSION') }}{{ lang('COLON') }}</td>
+        <td><strong>{{ LATEST_VERSION }}</strong></td>
+    </tr>
+    </tbody>
+</table>
+<br />
 <table cellspacing="1">
 
 	<caption>{{ lang('DIR_STATS') }}</caption>
@@ -66,11 +98,18 @@
 				</dl>
 			</form>
 			{% if TOTAL_ORPHANS %}
-			<form id="action_stats_form" method="post" action="{{ U_ACTION }}" data-ajax="true">
+			<form id="action_orphans_form" method="post" action="{{ U_ACTION }}" data-ajax="true">
 				<dl>
-					<dt><label for="action_stats">{{ lang('DIR_DELETE_ORPHANS') }}</label><br /><span>{{ lang('DIR_DELETE_ORPHANS_EXPLAIN') }}</span></dt>
-					<dd><input type="hidden" name="action" value="orphans" /><input class="button2" type="submit" id="action_orphans" name="action_orphans" value="{{ lang('RUN') }}" /></dd>
-				</dl>
+					<dt>
+						<label for="action_orphans">{{ lang('DIR_DELETE_ORPHANS') }}</label><br />
+						<span>{{ lang('DIR_DELETE_ORPHANS_EXPLAIN') }}</span>
+					</dt>
+				<dd>
+					<input type="hidden" name="action" value="orphans" />
+					<input class="button2" type="submit" id="action_orphans" name="action_orphans" value="{{ lang('RUN') }}" />
+				</dd>
+			</dl>
+			{{ S_FORM_TOKEN }}
 			</form>
 			{% endif %}
 		</fieldset>

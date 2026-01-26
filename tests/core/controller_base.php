@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\tests\core
+namespace nextgen\phpbbdirectory\tests\core
 {
 	abstract class controller_base extends \phpbb_database_test_case
 	{
@@ -40,7 +40,7 @@ namespace ernadoo\phpbbdirectory\tests\core
 		*/
 		static protected function setup_extensions()
 		{
-			return array('ernadoo/phpbbdirectory');
+			return array('nextgen/phpbbdirectory');
 		}
 
 		public function setUp()
@@ -136,7 +136,7 @@ namespace ernadoo\phpbbdirectory\tests\core
 
 			$phpbb_log = new \phpbb\log\log($this->db, $this->user, $this->auth, $this->dispatcher, $phpbb_root_path, 'adm/', $phpEx, LOG_TABLE);
 
-			$this->core_link = new \ernadoo\phpbbdirectory\core\link(
+			$this->core_link = new \nextgen\phpbbdirectory\core\link(
 				$this->db,
 				$this->config,
 				$this->lang,
@@ -156,7 +156,7 @@ namespace ernadoo\phpbbdirectory\tests\core
 			$this->core_link->set_path_helper($this->phpbb_path_helper);
 			$this->core_link->set_extension_manager($this->phpbb_extension_manager);
 
-			$this->core_cron = new \ernadoo\phpbbdirectory\core\cron(
+			$this->core_cron = new \nextgen\phpbbdirectory\core\cron(
 				$this->db,
 				$this->config,
 				$phpbb_log,
@@ -170,12 +170,12 @@ namespace ernadoo\phpbbdirectory\tests\core
 			$this->core_cron->set_path_helper($this->phpbb_path_helper);
 			$this->core_cron->set_extension_manager($this->phpbb_extension_manager);
 
-			$cron_task = new \ernadoo\phpbbdirectory\cron\task\core\prune_categorie(
+			$cron_task = new \nextgen\phpbbdirectory\cron\task\core\prune_categorie(
 				$this->config,
 				$this->core_cron,
 				$phpEx
 			);
-			$cron_task->set_name('ernadoo.phpbbdirectory.cron.task.core.prune_categorie');
+			$cron_task->set_name('nextgen.phpbbdirectory.cron.task.core.prune_categorie');
 
 			$this->cron = $this->create_cron_manager(array($cron_task));
 			$phpbb_container->set('cron.manager', $this->cron);

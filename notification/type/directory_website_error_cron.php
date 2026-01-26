@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\notification\type;
+namespace nextgen\phpbbdirectory\notification\type;
 
 /**
 * phpbb directory notifications class
@@ -24,7 +24,7 @@ class directory_website_error_cron extends \phpbb\notification\type\base
 	*/
 	public function get_type()
 	{
-		return 'ernadoo.phpbbdirectory.notification.type.directory_website_error_cron';
+		return 'nextgen.phpbbdirectory.notification.type.directory_website_error_cron';
 	}
 
 	/**
@@ -105,7 +105,7 @@ class directory_website_error_cron extends \phpbb\notification\type\base
 	*/
 	public function get_email_template()
 	{
-		return '@ernadoo_phpbbdirectory/directory_website_error_cron';
+		return '@nextgen_phpbbdirectory/directory_website_error_cron';
 	}
 
 	/**

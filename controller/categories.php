@@ -3,15 +3,15 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\controller;
+namespace nextgen\phpbbdirectory\controller;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \ernadoo\phpbbdirectory\core\helper;
+use \nextgen\phpbbdirectory\core\helper;
 use \E1379\SpeakingUrl\SpeakingUrl;
 
 class categories extends helper
@@ -43,10 +43,10 @@ class categories extends helper
 	/** @var \phpbb\pagination */
 	protected $pagination;
 
-	/** @var \ernadoo\phpbbdirectory\core\categorie */
+	/** @var \nextgen\phpbbdirectory\core\categorie */
 	protected $categorie;
 
-	/** @var \ernadoo\phpbbdirectory\core\link */
+	/** @var \nextgen\phpbbdirectory\core\link */
 	protected $link;
 
 	/**
@@ -61,10 +61,10 @@ class categories extends helper
 	* @param \phpbb\request\request								$request	Request object
 	* @param \phpbb\auth\auth									$auth		Auth object
 	* @param \phpbb\pagination									$pagination	Pagination object
-	* @param \ernadoo\phpbbdirectory\core\categorie				$categorie	PhpBB Directory extension categorie object
-	* @param \ernadoo\phpbbdirectory\core\link					$link		PhpBB Directory extension link object
+	* @param \nextgen\phpbbdirectory\core\categorie				$categorie	PhpBB Directory extension categorie object
+	* @param \nextgen\phpbbdirectory\core\link					$link		PhpBB Directory extension link object
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\language\language $language, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\request\request $request, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \ernadoo\phpbbdirectory\core\categorie $categorie, \ernadoo\phpbbdirectory\core\link $link)
+	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\language\language $language, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\request\request $request, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \nextgen\phpbbdirectory\core\categorie $categorie, \nextgen\phpbbdirectory\core\link $link)
 	{
 		$this->db			= $db;
 		$this->config		= $config;
@@ -113,7 +113,7 @@ class categories extends helper
 			throw new \phpbb\exception\http_exception(404, 'DIR_ERROR_NO_CATS');
 		}
 
-		$url = $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $cat_id, array('page' => $page));
+		$url = $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $cat_id, array('page' => $page));
 
 		return new RedirectResponse($url, 301);
 	}
@@ -212,7 +212,7 @@ class categories extends helper
 		$this->categorie->make_cat_jumpbox();
 
 		$base_url = array(
-			'routes'	=> 'ernadoo_phpbbdirectory_dynamic_route_' . $cat_id,
+			'routes'	=> 'nextgen_phpbbdirectory_dynamic_route_' . $cat_id,
 			'params'	=> array_merge(array('cat_id' => $cat_id), $u_sort_param),
 		);
 
@@ -225,14 +225,14 @@ class categories extends helper
 			'S_SELECT_SORT_KEY'		=> $s_sort_key,
 			'S_SELECT_SORT_DAYS'	=> $s_limit_days,
 			'S_CATLIST'				=> $this->categorie->make_cat_select($cat_id),
-			'S_PAGE_ACTION'			=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $cat_id, array('page' => $page)),
+			'S_PAGE_ACTION'			=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $cat_id, array('page' => $page)),
 			'S_CAT_ID'				=> $cat_id,
 
 			'TOTAL_LINKS'			=> $this->language->lang('DIR_NB_LINKS', (int) $nb_links),
 
-			'U_NEW_SITE' 			=> $this->helper->route('ernadoo_phpbbdirectory_new_controller', array('cat_id' => $cat_id)),
+			'U_NEW_SITE' 			=> $this->helper->route('nextgen_phpbbdirectory_new_controller', array('cat_id' => $cat_id)),
 
-			'U_VIEW_CAT'			=> $this->helper->route('ernadoo_phpbbdirectory_dynamic_route_' . $cat_id),
+			'U_VIEW_CAT'			=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $cat_id),
 			'U_WATCH_CAT'			=> $s_watching_categorie['link'],
 			'U_WATCH_CAT_TOGGLE'	=> $s_watching_categorie['link_toggle'],
 			'S_WATCH_CAT_TITLE'		=> $s_watching_categorie['title'],
@@ -361,13 +361,13 @@ class categories extends helper
 
 					'S_NEW_LINK'	=> (((time() - $site['link_time']) / 86400) <= $this->config['dir_new_time']) ? true : false,
 
-					'U_COMMENT'		=> ($comments_status) ? $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $site['link_id'])) : '',
-					'U_DELETE'		=> $delete_allowed ? $this->helper->route('ernadoo_phpbbdirectory_delete_controller', array('cat_id' => (int) $cat_id, 'link_id' => (int) $site['link_id'], '_referer' => $this->helper->get_current_url())) : '',
-					'U_EDIT'		=> $edit_allowed ? $this->helper->route('ernadoo_phpbbdirectory_edit_controller', array('cat_id' => (int) $cat_id, 'link_id' => (int) $site['link_id'])) : '',
-					'U_FORM_VOTE'	=> ($votes_status) ? $this->helper->route('ernadoo_phpbbdirectory_vote_controller', array('cat_id' => (int) $site['link_cat'], 'link_id' => (int) $site['link_id'])) : '',
+					'U_COMMENT'		=> ($comments_status) ? $this->helper->route('nextgen_phpbbdirectory_comment_view_controller', array('link_id' => (int) $site['link_id'])) : '',
+					'U_DELETE'		=> $delete_allowed ? $this->helper->route('nextgen_phpbbdirectory_delete_controller', array('cat_id' => (int) $cat_id, 'link_id' => (int) $site['link_id'], '_referer' => $this->helper->get_current_url())) : '',
+					'U_EDIT'		=> $edit_allowed ? $this->helper->route('nextgen_phpbbdirectory_edit_controller', array('cat_id' => (int) $cat_id, 'link_id' => (int) $site['link_id'])) : '',
+					'U_FORM_VOTE'	=> ($votes_status) ? $this->helper->route('nextgen_phpbbdirectory_vote_controller', array('cat_id' => (int) $site['link_cat'], 'link_id' => (int) $site['link_id'])) : '',
 					'U_LINK'		=> $site['link_url'],
 					'U_THUMB'		=> $s_thumb,
-					'U_VIEW'		=> $this->helper->route('ernadoo_phpbbdirectory_view_controller', array('link_id' => (int) $site['link_id']))
+					'U_VIEW'		=> $this->helper->route('nextgen_phpbbdirectory_view_controller', array('link_id' => (int) $site['link_id']))
 				));
 			}
 		}

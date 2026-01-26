@@ -6,9 +6,9 @@ phpBB directory is an Extension for phpBB 3.3
 
 ## Installation
 
-Clone into phpBB/ext/ernadoo/phpbbdirectory:
+Clone into phpBB/ext/nextgen/phpbbdirectory:
 
-    git clone https://github.com/nextgen-solutions-gt/ext-phpbb-directory.git phpBB/ext/ernadoo/phpbbdirectory
+    git clone https://github.com/nextgen-solutions-gt/ext-phpbb-directory.git phpBB/ext/nextgen/phpbbdirectory
 
 Set up the dependencies:
 

@@ -3,7 +3,7 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
@@ -12,7 +12,7 @@
 // however you can override the default methods and add custom
 // installation logic
 
-namespace ernadoo\phpbbdirectory;
+namespace nextgen\phpbbdirectory;
 
 class ext extends \phpbb\extension\base
 {
@@ -55,11 +55,11 @@ class ext extends \phpbb\extension\base
 
 				// Enable notifications
 				return $this->notification_handler('enable', array(
-					'ernadoo.phpbbdirectory.notification.type.directory_website',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_approved',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_disapproved',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_error_cron',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_in_queue',
+					'nextgen.phpbbdirectory.notification.type.directory_website',
+					'nextgen.phpbbdirectory.notification.type.directory_website_approved',
+					'nextgen.phpbbdirectory.notification.type.directory_website_disapproved',
+					'nextgen.phpbbdirectory.notification.type.directory_website_error_cron',
+					'nextgen.phpbbdirectory.notification.type.directory_website_in_queue',
 				));
 
 			break;
@@ -93,11 +93,11 @@ class ext extends \phpbb\extension\base
 
 				// Disable notifications
 				return $this->notification_handler('disable', array(
-					'ernadoo.phpbbdirectory.notification.type.directory_website',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_approved',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_disapproved',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_error_cron',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_in_queue',
+					'nextgen.phpbbdirectory.notification.type.directory_website',
+					'nextgen.phpbbdirectory.notification.type.directory_website_approved',
+					'nextgen.phpbbdirectory.notification.type.directory_website_disapproved',
+					'nextgen.phpbbdirectory.notification.type.directory_website_error_cron',
+					'nextgen.phpbbdirectory.notification.type.directory_website_in_queue',
 				));
 
 			break;
@@ -125,11 +125,11 @@ class ext extends \phpbb\extension\base
 
 				// Purge notifications
 				return $this->notification_handler('purge', array(
-					'ernadoo.phpbbdirectory.notification.type.directory_website',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_approved',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_disapproved',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_error_cron',
-					'ernadoo.phpbbdirectory.notification.type.directory_website_in_queue',
+					'nextgen.phpbbdirectory.notification.type.directory_website',
+					'nextgen.phpbbdirectory.notification.type.directory_website_approved',
+					'nextgen.phpbbdirectory.notification.type.directory_website_disapproved',
+					'nextgen.phpbbdirectory.notification.type.directory_website_error_cron',
+					'nextgen.phpbbdirectory.notification.type.directory_website_in_queue',
 				));
 
 			break;

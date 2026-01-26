@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\tests\core
+namespace nextgen\phpbbdirectory\tests\core
 {
 	/**
 	 * @group controller
@@ -30,7 +30,7 @@ namespace ernadoo\phpbbdirectory\tests\core
 
 			parent::setUp();
 
-			$this->get_test_case_helpers()->copy_dir(__DIR__ . '/fixtures/banners/', $phpbb_root_path . 'files/ext/ernadoo/phpbbdirectory/banners/');
+			$this->get_test_case_helpers()->copy_dir(__DIR__ . '/fixtures/banners/', $phpbb_root_path . 'files/ext/nextgen/phpbbdirectory/banners/');
 
 			$this->config['dir_banner_width']	= 300;
 			$this->config['dir_banner_height']	= 100;
@@ -45,7 +45,7 @@ namespace ernadoo\phpbbdirectory\tests\core
 			$this->user->data['user_id']		= $user_id;
 			$this->user->data['is_registered']	= ($this->user->data['user_id'] != ANONYMOUS && ($this->user->data['user_type'] == USER_NORMAL || $this->user->data['user_type'] == USER_FOUNDER)) ? true : false;
 
-			$this->core_link = new \ernadoo\phpbbdirectory\core\link(
+			$this->core_link = new \nextgen\phpbbdirectory\core\link(
 				$this->db,
 				$this->config,
 				$this->lang,
@@ -146,7 +146,7 @@ namespace ernadoo\phpbbdirectory\tests\core
 	}
 }
 
-namespace ernadoo\phpbbdirectory\core
+namespace nextgen\phpbbdirectory\core
 {
 	function unique_id()
 	{

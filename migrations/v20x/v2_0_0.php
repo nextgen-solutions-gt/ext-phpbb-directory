@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\migrations\v20x;
+namespace nextgen\phpbbdirectory\migrations\v20x;
 
 class v2_0_0 extends \phpbb\db\migration\container_aware_migration
 {
@@ -18,7 +18,7 @@ class v2_0_0 extends \phpbb\db\migration\container_aware_migration
 	static public function depends_on()
 	{
 		return array(
-			'\ernadoo\phpbbdirectory\migrations\v10x\v1_0_0',
+			'\nextgen\phpbbdirectory\migrations\v10x\v1_0_0',
 		);
 	}
 
@@ -36,9 +36,9 @@ class v2_0_0 extends \phpbb\db\migration\container_aware_migration
 	{
 		$limit = 100;
 		$fast_reparsers = array(
-			array('\ernadoo\phpbbdirectory\textreparser\plugins\cat_description', 'directory_cats'),
-			array('\ernadoo\phpbbdirectory\textreparser\plugins\comment_text', 'directory_comments'),
-			array('\ernadoo\phpbbdirectory\textreparser\plugins\link_description', 'directory_links'),
+			array('\nextgen\phpbbdirectory\textreparser\plugins\cat_description', 'directory_cats'),
+			array('\nextgen\phpbbdirectory\textreparser\plugins\comment_text', 'directory_comments'),
+			array('\nextgen\phpbbdirectory\textreparser\plugins\link_description', 'directory_links'),
 		);
 
 		if (!is_array($resume_data))

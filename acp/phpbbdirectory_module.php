@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\acp;
+namespace nextgen\phpbbdirectory\acp;
 
 class phpbbdirectory_module
 {
@@ -41,7 +41,7 @@ class phpbbdirectory_module
 				$this->tpl_name = 'acp_dir_main';
 
 				// Get an instance of the acp_main controller
-				$main_controller = $phpbb_container->get('ernadoo.phpbbdirectory.controller.acp.main');
+				$main_controller = $phpbb_container->get('nextgen.phpbbdirectory.controller.acp.main');
 
 				// Make the $u_action url available in the acp_main controller
 				$main_controller->set_page_url($this->u_action);
@@ -66,7 +66,7 @@ class phpbbdirectory_module
 			case 'settings':
 
 				// Get an instance of the acp_settings controller
-				$settings_controller = $phpbb_container->get('ernadoo.phpbbdirectory.controller.acp.settings');
+				$settings_controller = $phpbb_container->get('nextgen.phpbbdirectory.controller.acp.settings');
 
 				// Set the page title for our ACP page
 				$this->page_title = 'ACP_DIRECTORY_SETTINGS';
@@ -93,7 +93,7 @@ class phpbbdirectory_module
 				$this->tpl_name = 'acp_dir_cat';
 
 				// Get an instance of the acp_cat controller
-				$cat_controller = $phpbb_container->get('ernadoo.phpbbdirectory.controller.acp.cat');
+				$cat_controller = $phpbb_container->get('nextgen.phpbbdirectory.controller.acp.cat');
 
 				// Make the $u_action url available in the acp_cat controller
 				$cat_controller->set_page_url($this->u_action);
@@ -158,7 +158,7 @@ class phpbbdirectory_module
 				$this->tpl_name = 'acp_dir_val';
 
 				// Get an instance of the acp_validation controller
-				$validation_controller = $phpbb_container->get('ernadoo.phpbbdirectory.controller.acp.validation');
+				$validation_controller = $phpbb_container->get('nextgen.phpbbdirectory.controller.acp.validation');
 
 				// Make the $u_action url available in the acp_validation controller
 				$validation_controller->set_page_url($this->u_action);
@@ -195,8 +195,8 @@ class phpbbdirectory_module
 	public function get_thumb_service_list($url_selected)
 	{
 		$thumbshot = array(
-			'http://www.apercite.fr/apercite/120x90/oui/oui/',
-			'http://www.easy-thumb.net/min.html?url=',
+			'https://s.wordpress.com/mshots/v1/',
+			'https://image.thum.io/get/width/120/',
 		);
 
 		$select_options = '';

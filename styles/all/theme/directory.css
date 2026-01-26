@@ -6,9 +6,8 @@
 
 .linkbody {
 	padding: 0;
-	margin-left: 142px;
+	margin-left: 155px;
 	line-height: 1.48em;
-	color: #333333;
 }
 
 .commentbody .ignore {
@@ -20,6 +19,76 @@
 	clear: none;
 	padding-right: 5px;
 }
+
+.dir-comments-container {
+	margin: 10px auto 0;
+	width: 98%;
+	max-width: 1200px;
+	padding: 5px;
+	box-sizing: border-box;
+}
+
+.js-dir-comment-form {
+	margin-bottom: 14px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #dbe6ef;
+}
+
+.js-dir-comment-form textarea,
+.dir-comment-textarea {
+	width: 100%;
+    min-width: 400px;
+	min-height: 90px;
+	resize: vertical;
+	margin-bottom: 6px;
+}
+
+.js-dir-comment-form button,
+.dir-comment-submit {
+	margin-top: 6px;
+}
+
+.js-dir-comments-list {
+	margin-top: 10px;
+}
+
+.dir-comment,
+.js-dir-comments-list .panel {
+	background: #ffffff;
+	border: 1px solid #e3edf5;
+	border-radius: 6px;
+	padding: 10px 12px;
+	margin-bottom: 8px;
+}
+
+.dir-comment-author,
+.commentbody .author {
+	color: #666;
+	margin-bottom: 4px;
+}
+
+.dir-comment-divider,
+.js-dir-comments-list hr.divider {
+	margin: 6px 0;
+	border: none;
+	border-top: 1px solid #e3edf5;
+}
+
+.dir-no-comments,
+.js-dir-comments-list .panel strong {
+	display: block;
+	opacity: 0.8;
+}
+
+.dir-comments-container .pagination {
+	margin: 6px 0 10px;
+}
+
+.dir-comments-container .pagination a,
+.dir-comments-container .pagination span {
+	padding: 2px 6px;
+}
+
 
 .postbody h3 img {
 	/* Also see tweaks.css */
@@ -70,7 +139,7 @@ dl.icon_cat dd {
 }
 
 .linkinfos {
-	padding: 10px 0 10px 0;
+	padding: 10px 10px 10px 0;
 	text-align:center;
 	min-height: 160px;
 	width:140px;
@@ -98,6 +167,18 @@ table.recents {
 	padding: 2px;
 	border-spacing: 10px;
 	width: 100%;
+}
+
+/* Thumb */
+.dir-thumb {
+	flex: 0 0 120px;
+	text-align: center;
+}
+
+.dir-thumb img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 4px;
 }
 
 .rtl dl.icon_cat {

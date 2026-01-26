@@ -3,19 +3,19 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\migrations\v10x;
+namespace nextgen\phpbbdirectory\migrations\v10x;
 
 class v1_0_0 extends \phpbb\db\migration\migration
 {
 	static public function depends_on()
 	{
 		return array(
-				'\ernadoo\phpbbdirectory\migrations\converter\convert_module',
+				'\nextgen\phpbbdirectory\migrations\converter\convert_module',
 		);
 	}
 
@@ -203,7 +203,7 @@ class v1_0_0 extends \phpbb\db\migration\migration
 				'acp',
 				'ACP_DIRECTORY',
 				array(
-					'module_basename'	=> '\ernadoo\phpbbdirectory\acp\phpbbdirectory_module',
+					'module_basename'	=> '\nextgen\phpbbdirectory\acp\phpbbdirectory_module',
 					'modes'				=> array('main', 'settings', 'cat', 'val'),
 				),
 			)),
@@ -266,8 +266,8 @@ class v1_0_0 extends \phpbb\db\migration\migration
 	public function create_directories()
 	{
 		$directories = array(
-			'files/ext/ernadoo/phpbbdirectory/banners/',
-			'files/ext/ernadoo/phpbbdirectory/icons/',
+			'files/ext/nextgen/phpbbdirectory/banners/',
+			'files/ext/nextgen/phpbbdirectory/icons/',
 		);
 
 		foreach ($directories as $dir)
@@ -287,7 +287,7 @@ class v1_0_0 extends \phpbb\db\migration\migration
 	*/
 	public function remove_directories()
 	{
-		$dir = $this->phpbb_root_path . 'files/ext/ernadoo/phpbbdirectory/';
+		$dir = $this->phpbb_root_path . 'files/ext/nextgen/phpbbdirectory/';
 
 		$this->_recursive_rmdir($dir);
 	}

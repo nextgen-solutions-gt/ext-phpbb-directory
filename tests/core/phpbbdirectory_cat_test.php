@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\tests\core;
+namespace nextgen\phpbbdirectory\tests\core;
 
 /**
 * @group controller
@@ -47,7 +47,7 @@ class phpbbdirectory_cat_test extends controller_base
 		$this->user->data['user_id']		= $user_id;
 		$this->user->data['is_registered']	= ($this->user->data['user_id'] != ANONYMOUS && ($this->user->data['user_type'] == USER_NORMAL || $this->user->data['user_type'] == USER_FOUNDER)) ? true : false;
 
-		$this->core_categorie = new \ernadoo\phpbbdirectory\core\categorie(
+		$this->core_categorie = new \nextgen\phpbbdirectory\core\categorie(
 			$this->db,
 			$this->config,
 			$this->lang,
@@ -74,13 +74,13 @@ class phpbbdirectory_cat_test extends controller_base
 				'FORUM_ID'			=> 1,
 				'FORUM_NAME'		=> 'Catégorie 1',
 				'S_FORUM_COUNT' 	=> 0,
-				'LINK'				=> 'ernadoo_phpbbdirectory_dynamic_route_1',
+				'LINK'				=> 'nextgen_phpbbdirectory_dynamic_route_1',
 			)),
 			array('jumpbox_forums', array(
 				'FORUM_ID'			=> 2,
 				'FORUM_NAME'		=> 'Catégorie 2',
 				'S_FORUM_COUNT'		=> 1,
-				'LINK'				=> 'ernadoo_phpbbdirectory_dynamic_route_2',
+				'LINK'				=> 'nextgen_phpbbdirectory_dynamic_route_2',
 			)),
 			array('jumpbox_forums.level', array(
 			)),
@@ -88,7 +88,7 @@ class phpbbdirectory_cat_test extends controller_base
 				'FORUM_ID'			=> 3,
 				'FORUM_NAME'		=> 'Catégorie 3',
 				'S_FORUM_COUNT'		=> 2,
-				'LINK'				=> 'ernadoo_phpbbdirectory_dynamic_route_3',
+				'LINK'				=> 'nextgen_phpbbdirectory_dynamic_route_3',
 			)),
 			array('jumpbox_forums.level', array(
 			)),
@@ -96,7 +96,7 @@ class phpbbdirectory_cat_test extends controller_base
 				'FORUM_ID'			=> 4,
 				'FORUM_NAME'		=> 'Catégorie 4',
 				'S_FORUM_COUNT'		=> 3,
-				'LINK'				=> 'ernadoo_phpbbdirectory_dynamic_route_4',
+				'LINK'				=> 'nextgen_phpbbdirectory_dynamic_route_4',
 			)),
 			array('jumpbox_forums.level', array(
 			))

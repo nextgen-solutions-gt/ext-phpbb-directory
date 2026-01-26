@@ -3,12 +3,12 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\tests\routing;
+namespace nextgen\phpbbdirectory\tests\routing;
 
 class categories_routing_loader_test extends \phpbb_database_test_case
 {
@@ -19,7 +19,7 @@ class categories_routing_loader_test extends \phpbb_database_test_case
 	*/
 	static protected function setup_extensions()
 	{
-		return array('ernadoo/phpbbdirectory');
+		return array('nextgen/phpbbdirectory');
 	}
 
 	/** @var \phpbb\db\driver\driver_interface */
@@ -43,7 +43,7 @@ class categories_routing_loader_test extends \phpbb_database_test_case
 		$this->db = $this->new_dbal();
 
 		// Instantiate the categories route loader
-		$this->loader = new \ernadoo\phpbbdirectory\routing\categories_loader($this->db, 'phpbb_directory_cats');
+		$this->loader = new \nextgen\phpbbdirectory\routing\categories_loader($this->db, 'phpbb_directory_cats');
 
 		// Get a collection of categories' routes
 		$this->collection = $this->get_categories_route_collection();
@@ -56,7 +56,7 @@ class categories_routing_loader_test extends \phpbb_database_test_case
 	*/
 	public function get_categories_route_collection()
 	{
-		$collection = $this->loader->load('ernadoo_phpbbdirectory_route_controller', 'phpbbdirectory_extension');
+		$collection = $this->loader->load('nextgen_phpbbdirectory_route_controller', 'phpbbdirectory_extension');
 
 		// Assert the collection is an instance of RouteCollection
 		$this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection, 'A route collection instance could not be made.');
@@ -87,7 +87,7 @@ class categories_routing_loader_test extends \phpbb_database_test_case
 	public function test_page_loader($id, $expected)
 	{
 		// Get a route instance
-		$route = $this->collection->get('ernadoo_phpbbdirectory_dynamic_route_' . $id);
+		$route = $this->collection->get('nextgen_phpbbdirectory_dynamic_route_' . $id);
 
 		// Assert the roue is an instance of Route
 		$this->assertInstanceOf('Symfony\Component\Routing\Route', $route, 'A route instance could not be made.');

@@ -3,14 +3,14 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2025 nextgen <http://nextgen.gt>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-namespace ernadoo\phpbbdirectory\controller;
+namespace nextgen\phpbbdirectory\controller;
 
-use \ernadoo\phpbbdirectory\core\helper;
+use \nextgen\phpbbdirectory\core\helper;
 
 class comments extends helper
 {
@@ -48,10 +48,10 @@ class comments extends helper
 	/** @var \phpbb\captcha\factory */
 	protected $captcha_factory;
 
-	/** @var \ernadoo\phpbbdirectory\core\categorie */
+	/** @var \nextgen\phpbbdirectory\core\categorie */
 	protected $categorie;
 
-	/** @var \ernadoo\phpbbdirectory\core\comment */
+	/** @var \nextgen\phpbbdirectory\core\comment */
 	protected $comment;
 
 	/** @var string phpBB root path */
@@ -73,12 +73,12 @@ class comments extends helper
 	* @param \phpbb\auth\auth									$auth				Auth object
 	* @param \phpbb\pagination									$pagination			Pagination object
 	* @param \phpbb\captcha\factory								$captcha_factory	Captcha object
-	* @param \ernadoo\phpbbdirectory\core\categorie				$categorie			PhpBB Directory extension categorie object
-	* @param \ernadoo\phpbbdirectory\core\comment				$comment			PhpBB Directory extension comment object
+	* @param \nextgen\phpbbdirectory\core\categorie				$categorie			PhpBB Directory extension categorie object
+	* @param \nextgen\phpbbdirectory\core\comment				$comment			PhpBB Directory extension comment object
 	* @param string												$root_path			phpBB root path
 	* @param string												$php_ext			phpEx
 	*/
-	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\language\language $language, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\request\request $request, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \phpbb\captcha\factory $captcha_factory, \ernadoo\phpbbdirectory\core\categorie $categorie, \ernadoo\phpbbdirectory\core\comment $comment, $root_path, $php_ext)
+	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\config\config $config, \phpbb\language\language $language, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \phpbb\request\request $request, \phpbb\auth\auth $auth, \phpbb\pagination $pagination, \phpbb\captcha\factory $captcha_factory, \nextgen\phpbbdirectory\core\categorie $categorie, \nextgen\phpbbdirectory\core\comment $comment, $root_path, $php_ext)
 	{
 		$this->db				= $db;
 		$this->config			= $config;
@@ -109,12 +109,17 @@ class comments extends helper
 	}
 
 	/**
-	* Populate form when an error occurred
+	* Delete an existing comment.
 	*
-	* @param	int		$link_id		The link ID
-	* @param	int		$comment_id		The comment ID
-	* @return	\Symfony\Component\HttpFoundation\Response	A Symfony Response object
-	* @throws	\phpbb\exception\http_exception
+	* Handles permission checks, confirmation dialog and final deletion
+	* of a comment associated with a directory link.
+	*
+	* @param int $link_id    The link ID the comment belongs to
+	* @param int $comment_id The comment ID to be deleted
+	*
+	* @return \Symfony\Component\HttpFoundation\Response|null
+	*
+	* @throws \phpbb\exception\http_exception
 	*/
 	public function delete_comment($link_id, $comment_id)
 	{
@@ -122,7 +127,7 @@ class comments extends helper
 
 		if ($this->request->is_set_post('cancel'))
 		{
-			$redirect = $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id));
+			$redirect = $this->helper->route('nextgen_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id));
 			redirect($redirect);
 		}
 
@@ -141,7 +146,7 @@ class comments extends helper
 		{
 			$this->comment->del($link_id, $comment_id);
 
-			$meta_info = $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id));
+			$meta_info = $this->helper->route('nextgen_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id));
 			meta_refresh(3, $meta_info);
 			$message = $this->language->lang('DIR_COMMENT_DELETE_OK');
 			$message = $message . '<br /><br />' . $this->language->lang('DIR_CLICK_RETURN_COMMENT', '<a href="' . $meta_info . '">', '</a>');
@@ -154,12 +159,17 @@ class comments extends helper
 	}
 
 	/**
-	* Edit a comment
+	* Edit an existing comment.
 	*
-	* @param	int		$link_id		The category ID
-	* @param	int		$comment_id		The comment ID
-	* @return	null|\Symfony\Component\HttpFoundation\Response	A Symfony Response object
-	* @throws	\phpbb\exception\http_exception
+	* Loads the comment data, checks edit permissions and either
+	* displays the edit form or processes the submitted changes.
+	*
+	* @param int $link_id    The link ID the comment belongs to
+	* @param int $comment_id The comment ID to edit
+	*
+	* @return \Symfony\Component\HttpFoundation\Response|null
+	*
+	* @throws \phpbb\exception\http_exception
 	*/
 	public function edit_comment($link_id, $comment_id)
 	{
@@ -191,11 +201,17 @@ class comments extends helper
 	}
 
 	/**
-	* Post a new comment
+	* Create a new comment for a directory link.
 	*
-	* @param	int	$link_id		The category ID
-	* @return	null
-	* @throws	\phpbb\exception\http_exception
+	* Handles both normal form submission and AJAX-based submission.
+	* When called via AJAX, the comment is processed and returned
+	* without performing a redirect.
+	*
+	* @param int $link_id The link ID to attach the new comment to
+	*
+	* @return \Symfony\Component\HttpFoundation\Response|null
+	*
+	* @throws \phpbb\exception\http_exception
 	*/
 	public function new_comment($link_id)
 	{
@@ -212,122 +228,302 @@ class comments extends helper
 		// If form is done
 		if ($submit || $refresh)
 		{
-			return $this->_data_processing($link_id);
+		// 👉 Si es AJAX, NO redireccionar
+		if ($this->request->is_ajax())
+		{
+			return $this->ajax_post($link_id);
 		}
+
+		return $this->_data_processing($link_id);
+		}
+
 		else
 		{
-			$redirect = $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id));
+			$redirect = $this->helper->route('nextgen_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id));
 			redirect($redirect);
 		}
 	}
 
 	/**
-	* Display popup comment
+	* Load and display comments for a directory link.
 	*
-	* @param	int		$link_id		The category ID
-	* @param	int		$page			Page number taken from the URL
-	* @param	string	$mode			add|edit
-	* @return	\Symfony\Component\HttpFoundation\Response	A Symfony Response object
-	* @throws	\phpbb\exception\http_exception
+	* This method is used for both standard page rendering and
+	* AJAX-based comment loading. It handles pagination, permissions,
+	* template assignment and comment formatting.
+	*
+	* @param int    $link_id The link ID whose comments are displayed
+	* @param int    $page    Page number for pagination
+	* @param string $mode    Current mode (new|edit)
+	*
+	* @return \Symfony\Component\HttpFoundation\Response
+	*
+	* @throws \phpbb\exception\http_exception
 	*/
-	public function view($link_id, $page, $mode = 'new')
+	public function view($link_id, $page = 1, $mode = 'new')
 	{
+
 		$this->_check_comments_enable($link_id);
 
 		$comment_id = $this->request->variable('c', 0);
-		$view 		= $this->request->variable('view', '');
-		$start 		= ($page - 1) * $this->config['dir_comments_per_page'];
+		$view       = $this->request->variable('view', '');
 
-		$this->s_hidden_fields = array_merge($this->s_hidden_fields, array('page' => $page));
+
+		$per_page = (int) $this->config['dir_comments_per_page'];
+		$start    = ($page - 1) * $per_page;
+
+
+		$this->s_hidden_fields['page'] = $page;
 
 		$this->_populate_form($link_id, $mode);
 
-		$sql = 'SELECT COUNT(comment_id) AS nb_comments
+
+		$sql = 'SELECT COUNT(comment_id) AS total
 			FROM ' . $this->comments_table . '
 			WHERE comment_link_id = ' . (int) $link_id;
+
 		$result = $this->db->sql_query($sql);
-		$nb_comments = (int) $this->db->sql_fetchfield('nb_comments');
+		$total_comments = (int) $this->db->sql_fetchfield('total');
 		$this->db->sql_freeresult($result);
 
-		// Make sure $start is set to the last page if it exceeds the amount
-		$start = $this->pagination->validate_start($start, $this->config['dir_comments_per_page'], $nb_comments);
 
-		$sql_array = array(
-			'SELECT'	=> 'a.comment_id, a.comment_user_id, a. comment_user_ip, a.comment_date, a.comment_text, a.comment_uid, a.comment_bitfield, a.comment_flags, u.username, u.user_id, u.user_colour, z.foe',
-			'FROM'		=> array(
-					$this->comments_table	=> 'a'),
-			'LEFT_JOIN'	=> array(
-					array(
-						'FROM'	=> array(USERS_TABLE => 'u'),
-						'ON'	=> 'a.comment_user_id = u.user_id'
-					),
-					array(
-						'FROM'	=> array(ZEBRA_TABLE => 'z'),
-						'ON'	=> 'z.user_id = ' . (int) $this->user->data['user_id'] . ' AND z.zebra_id = a.comment_user_id'
-					)
-			),
-			'WHERE'		=> 'a.comment_link_id = ' . (int) $link_id,
-			'ORDER_BY'	=> 'a.comment_date DESC');
+		$start = $this->pagination->validate_start($start, $per_page, $total_comments);
+
+		$sql_array = [
+			'SELECT' => '
+				a.comment_id,
+				a.comment_user_id,
+				a.comment_user_ip,
+				a.comment_date,
+				a.comment_text,
+				a.comment_uid,
+				a.comment_bitfield,
+				a.comment_flags,
+				u.username,
+				u.user_colour,
+				z.foe
+			',
+			'FROM' => [
+				$this->comments_table => 'a'
+			],
+			'LEFT_JOIN' => [
+				[
+					'FROM' => [USERS_TABLE => 'u'],
+					'ON'   => 'a.comment_user_id = u.user_id'
+				],
+				[
+					'FROM' => [ZEBRA_TABLE => 'z'],
+					'ON'   => 'z.user_id = ' . (int) $this->user->data['user_id'] . '
+							AND z.zebra_id = a.comment_user_id'
+				]
+			],
+			'WHERE'    => 'a.comment_link_id = ' . (int) $link_id,
+			'ORDER_BY' => 'a.comment_date DESC'
+		];
+
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query_limit($sql, $this->config['dir_comments_per_page'], $start);
+		$result = $this->db->sql_query_limit($sql, $per_page, $start);
 
 		$have_result = false;
 
-		while ($comments = $this->db->sql_fetchrow($result))
+		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$have_result = true;
 
-			$edit_allowed = ($this->user->data['is_registered'] && ($this->auth->acl_get('m_edit_comment_dir') || (
-				$this->user->data['user_id'] == $comments['comment_user_id'] &&
-				$this->auth->acl_get('u_edit_comment_dir')
-			)));
 
-			$delete_allowed = ($this->user->data['is_registered'] && ($this->auth->acl_get('m_delete_comment_dir') || (
-				$this->user->data['user_id'] == $comments['comment_user_id'] &&
-				$this->auth->acl_get('u_delete_comment_dir')
-			)));
+			$can_edit = (
+				$this->user->data['is_registered'] &&
+				(
+					$this->auth->acl_get('m_edit_comment_dir') ||
+					(
+					$this->user->data['user_id'] == $row['comment_user_id'] &&
+					$this->auth->acl_get('u_edit_comment_dir')
+					)
+				)
+			);
 
-			$this->template->assign_block_vars('comment', array(
-				'MINI_POST_IMG'		=> $this->user->img('icon_post_target', 'POST'),
-				'S_USER'			=> get_username_string('full', $comments['comment_user_id'], $comments['username'], $comments['user_colour']),
-				'S_USER_IP'			=> $comments['comment_user_ip'],
-				'S_DATE'			=> $this->user->format_date($comments['comment_date']),
-				'S_COMMENT'			=> generate_text_for_display($comments['comment_text'], $comments['comment_uid'], $comments['comment_bitfield'], $comments['comment_flags']),
-				'S_ID'				=> $comments['comment_id'],
+			$can_delete = (
+				$this->user->data['is_registered'] &&
+				(
+					$this->auth->acl_get('m_delete_comment_dir') ||
+					(
+					$this->user->data['user_id'] == $row['comment_user_id'] &&
+					$this->auth->acl_get('u_delete_comment_dir')
+					)
+				)
+			);
 
-				'U_EDIT'			=> ($edit_allowed) 		? $this->helper->route('ernadoo_phpbbdirectory_comment_edit_controller', array('link_id' => (int) $link_id, 'comment_id' => (int) $comments['comment_id'])) : '',
-				'U_DELETE'			=> ($delete_allowed) 	? $this->helper->route('ernadoo_phpbbdirectory_comment_delete_controller', array('link_id' => (int) $link_id, 'comment_id' => (int) $comments['comment_id'], '_referer' => $this->helper->get_current_url())) : '',
 
-				'S_IGNORE_POST'		=> ($comments['foe'] && ($view != 'show' || $comment_id != $comments['comment_id'])) ? true : false,
-				'L_IGNORE_POST'		=> ($comments['foe']) ? $this->language->lang('POST_BY_FOE', get_username_string('full', $comments['comment_user_id'], $comments['username'], $comments['user_colour'])) : '',
-				'L_POST_DISPLAY'	=> ($comments['foe']) ? $this->language->lang('POST_DISPLAY', '<a class="display_post" data-post-id="' . $comments['comment_id'] . '" href="' . $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id, 'page' => $page)).'?c='.(int) $comments['comment_id'] . '&view=show#c'.(int) $comments['comment_id'].'">', '</a>') : '',
+			$this->template->assign_block_vars('comment', [
+				'S_ID'      => $row['comment_id'],
+				'S_USER'    => get_username_string(
+					'full',
+					$row['comment_user_id'],
+					$row['username'],
+					$row['user_colour']
+				),
+				'S_DATE'    => $this->user->format_date($row['comment_date']),
+				'S_COMMENT' => generate_text_for_display(
+					$row['comment_text'],
+					$row['comment_uid'],
+					$row['comment_bitfield'],
+					$row['comment_flags']
+				),
 
-				'S_INFO'			=> $this->auth->acl_get('m_info'),
-			));
+				'U_EDIT'   => $can_edit
+					? $this->helper->route(
+						'nextgen_phpbbdirectory_comment_edit_controller',
+						['link_id' => $link_id, 'comment_id' => $row['comment_id']]
+					)
+					: '',
+
+				'U_DELETE' => $can_delete
+					? $this->helper->route(
+						'nextgen_phpbbdirectory_comment_delete_controller',
+						[
+							'link_id'    => $link_id,
+							'comment_id' => $row['comment_id'],
+							'_referer'   => $this->helper->get_current_url()
+						]
+					)
+				: '',
+			]);
 		}
 
-		$base_url = array(
-			'routes'	=> 'ernadoo_phpbbdirectory_comment_view_controller',
-			'params'	=> array('link_id' => (int) $link_id),
+		$this->db->sql_freeresult($result);
+
+
+		$this->pagination->generate_template_pagination(
+			[
+				'routes' => 'nextgen_phpbbdirectory_comment_view_controller',
+				'params' => ['link_id' => $link_id],
+			],
+			'pagination',
+			'page',
+			$total_comments,
+			$per_page,
+			$start
 		);
 
-		$this->pagination->generate_template_pagination($base_url, 'pagination', 'page', $nb_comments, $this->config['dir_comments_per_page'], $start);
 
-		$this->template->assign_vars(array(
-			'TOTAL_COMMENTS'	=> $this->language->lang('DIR_NB_COMMS', (int) $nb_comments),
-			'S_HAVE_RESULT'		=> $have_result ? true : false,
-		));
+		$this->template->assign_vars([
+			'LINK_ID'         => (int) $link_id,
+			'TOTAL_COMMENTS'  => $this->language->lang('DIR_NB_COMMS', $total_comments),
+			'S_HAVE_RESULT'   => $have_result,
+		]);
 
-		return $this->helper->render('comments.html', $this->language->lang('DIR_COMMENT_TITLE'));
+		return $this->helper->render(
+			'comments.html',
+			$this->language->lang('DIR_COMMENT_TITLE')
+		);
 	}
 
+/**
+    * Handle AJAX comment submission.
+    */
+    public function ajax_post($link_id)
+    {
+        $this->_check_comments_enable($link_id);
+
+        if (!$this->auth->acl_get('u_comment_dir'))
+        {
+            throw new \phpbb\exception\http_exception(403, 'DIR_ERROR_NOT_AUTH');
+        }
+
+        if (!$this->request->is_ajax())
+        {
+            throw new \phpbb\exception\http_exception(400, 'BAD_REQUEST');
+        }
+
+        // Validar el token actual
+        if (!check_form_key('dir_form_comment'))
+        {
+            return new \Symfony\Component\HttpFoundation\JsonResponse([
+                'error' => $this->language->lang('FORM_INVALID')
+            ]);
+        }
+
+        $this->s_comment = $this->request->variable('message', '', true);
+
+        if (!function_exists('validate_data'))
+        {
+            include($this->root_path . 'includes/functions_user.' . $this->php_ext);
+        }
+
+        $error = validate_data(
+            ['reply' => $this->s_comment],
+            ['reply' => [['string', false, 1, $this->config['dir_length_comments']]]]
+        );
+
+        $error = array_map([$this->language, 'lang'], $error);
+
+        if ($error)
+        {
+            return new \Symfony\Component\HttpFoundation\JsonResponse([
+                'error' => implode('<br>', $error)
+            ]);
+        }
+
+        $uid = $bitfield = $flags = '';
+        generate_text_for_storage(
+            $this->s_comment,
+            $uid,
+            $bitfield,
+            $flags,
+            (bool) $this->config['dir_allow_bbcode'],
+            (bool) $this->config['dir_allow_links'],
+            (bool) $this->config['dir_allow_smilies'],
+            (bool) $this->config['dir_allow_bbcode'],
+            ($this->config['dir_allow_bbcode'] && $this->config['dir_allow_flash']),
+            true,
+            (bool) $this->config['dir_allow_links']
+        );
+
+        $this->comment->add([
+            'comment_link_id'  => (int) $link_id,
+            'comment_date'     => time(),
+            'comment_user_id'  => $this->user->data['user_id'],
+            'comment_user_ip'  => $this->user->ip,
+            'comment_text'     => $this->s_comment,
+            'comment_uid'      => $uid,
+            'comment_flags'    => $flags,
+            'comment_bitfield' => $bitfield,
+        ]);
+
+        // Recargamos la vista de comentarios (esto llena las variables del template)
+        $this->view($link_id, 1);
+
+        ob_start();
+        $this->template->display('comments_list.html');
+        $html = ob_get_clean();
+
+        $sql = 'SELECT COUNT(comment_id) AS total
+                FROM ' . $this->comments_table . '
+                WHERE comment_link_id = ' . (int) $link_id;
+
+        $result = $this->db->sql_query($sql);
+        $total = (int) $this->db->sql_fetchfield('total');
+        $this->db->sql_freeresult($result);
+
+        // RESPUESTA FINAL
+        return new \Symfony\Component\HttpFoundation\JsonResponse([
+            'html'      => $html,
+            'total'     => $total,
+            // Generamos un nuevo token para el siguiente comentario
+            'new_token' => add_form_key('dir_form_comment'), 
+        ]);
+    }
+
 	/**
-	* Routine
+	* Process comment form data.
 	*
-	* @param	int		$link_id		The link ID
-	* @param	int		$comment_id		The comment ID
-	* @param	string	$mode			new|edit
-	* @return	\Symfony\Component\HttpFoundation\Response	A Symfony Response object
+	* Validates input, handles CAPTCHA (if enabled) and either
+	* inserts or updates a comment depending on the current mode.
+	*
+	* @param int    $link_id    The link ID
+	* @param int    $comment_id The comment ID (used when editing)
+	* @param string $mode       Operation mode (new|edit)
+	*
+	* @return \Symfony\Component\HttpFoundation\Response
 	*/
 	private function _data_processing($link_id, $comment_id = 0, $mode = 'new')
 	{
@@ -399,7 +595,7 @@ class comments extends helper
 				$this->comment->add($data_add);
 			}
 
-			$meta_info = $this->helper->route('ernadoo_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id));
+			$meta_info = $this->helper->route('nextgen_phpbbdirectory_comment_view_controller', array('link_id' => (int) $link_id));
 			meta_refresh(3, $meta_info);
 			$message = $this->language->lang('DIR_'.strtoupper($mode).'_COMMENT_OK');
 			$message = $message . '<br /><br />' . $this->language->lang('DIR_CLICK_RETURN_COMMENT', '<a href="' . $meta_info . '">', '</a>');
@@ -502,7 +698,7 @@ class comments extends helper
 
 			'S_HIDDEN_FIELDS'	=> build_hidden_fields($this->s_hidden_fields),
 			'S_BUTTON_NAME'		=> ($mode == 'edit') ? 'update_comment' : 'submit_comment',
-			'S_POST_ACTION' 	=> ($mode == 'edit') ? '' : $this->helper->route('ernadoo_phpbbdirectory_comment_new_controller', array('link_id' => (int) $link_id)),
+			'S_POST_ACTION' 	=> ($mode == 'edit') ? '' : $this->helper->route('nextgen_phpbbdirectory_comment_new_controller', array('link_id' => (int) $link_id)),
 		));
 	}
 }

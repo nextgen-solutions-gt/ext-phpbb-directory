@@ -3,7 +3,7 @@
 *
 * phpBB Directory extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 ErnadoO <http://www.phpbb-services.com>
+* @copyright (c) 2014 nextgen <http://www.phpbb-services.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
@@ -60,7 +60,7 @@ $lang = array_merge($lang, array(
 	'DIR_BANNERS_DIR_SIZE'					=> 'Size of the banners directory',
 	'DIR_BANN_PARAM'						=> 'Banners Settings',
 	'DIR_CAT_ADMIN'							=> 'Settings of the directory categories',
-	'DIR_CAT_ADMIN_EXPLAIN'					=> 'Here you can add, modify or delete categories individually. If the statistiques of the links (comments, numbers of votes) or one of the categories seems uncorrect, you can also re-synchronize a category.',
+	'DIR_CAT_ADMIN_EXPLAIN'					=> 'Here you can add, modify or delete categories individually. If the statistics of the links (comments, numbers of votes) or one of the categories seems uncorrect, you can also re-synchronize a category.',
 	'DIR_CAT_CREATED'						=> 'The category has been created.',
 	'DIR_CAT_DATA_NEGATIVE'					=> 'The automatic checking settings and the number of checking before removal cannot be negatives or not existing.',
 	'DIR_CAT_DELETE'						=> 'Delete the category',
@@ -179,7 +179,7 @@ $lang = array_merge($lang, array(
 	'DIR_RESET_VOTES_SUCCESS'				=> 'Votes reseted',
 	'DIR_SELECT_CAT'						=> 'Select a category',
 	'DIR_SHOW'								=> 'Number of websites per page',
-	'DIR_STATS'								=> 'Directory statistiques',
+	'DIR_STATS'								=> 'Directory statistics',
 	'DIR_STORAGE_BANNER'					=> 'Copy the banners on the server',
 	'DIR_STORAGE_BANNER_EXPLAIN'			=> 'If you enable this option, the banners linked to the websites will be copied to this server.<br />Enabling this option makes page load faster.',
 	'DIR_SUBCAT'							=> 'Sub-category',

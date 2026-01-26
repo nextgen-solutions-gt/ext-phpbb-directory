@@ -1,0 +1,22 @@
+{# comments_list.html #}
+{% if comment %}
+	{% for comment in comment %}
+	<div id="p{{ comment.S_ID }}" class="panel bg1 dir-comment">
+		<div class="inner">
+			<p class="author dir-comment-author">
+				<strong>{{ comment.S_USER }}</strong> &raquo; {{ comment.S_DATE }}
+			</p>
+			<div class="content dir-comment-content">
+				{{ comment.S_COMMENT }}
+			</div>
+		</div>
+	</div>
+	<hr class="divider">
+	{% endfor %}
+{% else %}
+	<div class="panel">
+		<div class="inner">
+			<strong>{{ lang('DIR_NO_COMMENT') }}</strong>
+		</div>
+	</div>
+{% endif %}
