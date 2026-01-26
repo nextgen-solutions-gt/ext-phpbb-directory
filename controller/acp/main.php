@@ -195,7 +195,7 @@ class main extends helper
 		}
 
 		// 2. Leer versión remota desde GitHub
-		$remote_url = 'https://raw.githubusercontent.com/nextgen-solutions-gt/ext-phpbb-directory/master/phpbbdirectory_versions.json';
+		$remote_url = 'https://raw.githubusercontent.com/nextgen-solutions-gt/ext-phpbb-directory/3.3/phpbbdirectory_versions.json';
 		$latest_version = $current_version; // Por defecto igual a la local si falla el remoto
 		$download_url = '';
 

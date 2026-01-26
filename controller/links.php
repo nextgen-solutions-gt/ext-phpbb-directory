@@ -559,53 +559,7 @@ class links extends helper
         ));
     }
 	
-/**
-* Limpia banners huérfanos que no están en la base de datos
-*/
-public function clean_orphan_banners()
-{
-    // Solo permitimos que administradores ejecuten esto por seguridad
-    if (!$this->auth->acl_get('a_'))
-    {
-        throw new \phpbb\exception\http_exception(403, 'NOT_AUTHORISED');
-    }
 
-    $destination = $this->root_path . 'images/directory/banners/';
-    
-    // 1. Obtener todos los banners registrados en la DB
-    $sql = 'SELECT link_banner FROM ' . $this->table_prefix . 'dir_links 
-            WHERE link_banner <> ""';
-    $result = $this->db->sql_query($sql);
-    
-    $db_banners = [];
-    while ($row = $this->db->sql_fetchrow($result))
-    {
-        // Solo nos interesan nombres de archivos locales, no URLs http
-        if (!preg_match('/^(http|https):\/\//si', $row['link_banner']))
-        {
-            $db_banners[] = $row['link_banner'];
-        }
-    }
-    $this->db->sql_freeresult($result);
-
-    // 2. Escanear la carpeta física
-    $files_in_folder = array_diff(scandir($destination), array('.', '..', 'index.htm'));
-    
-    $deleted_count = 0;
-    foreach ($files_in_folder as $file)
-    {
-        // Si el archivo de la carpeta NO está en el array de la DB, es un huérfano
-        if (!in_array($file, $db_banners))
-        {
-            if (@unlink($destination . $file))
-            {
-                $deleted_count++;
-            }
-        }
-    }
-
-    return $this->helper->message("Limpieza completada. Se eliminaron $deleted_count archivos huérfanos.");
-}
 
 /**
     * Display a banner
