@@ -198,7 +198,7 @@ class categorie extends helper
 		$parent_id	= $visible_cats = 0;
 
 		$sql_array = array(
-			'SELECT'	=> 'cat_id, left_id, right_id, parent_id, cat_name, cat_desc, display_subcat_list, cat_desc_uid, cat_desc_bitfield, cat_desc_options, cat_links, cat_icon, cat_count_all',
+			'SELECT'	=> 'cat_id, left_id, right_id, parent_id, cat_name, cat_desc, display_subcat_list, cat_desc_uid, cat_desc_bitfield, cat_desc_options, cat_links, cat_icon, cat_icon_color, cat_count_all',
 			'FROM'		=> array(
 				$this->categories_table => ''
 			),
@@ -280,7 +280,8 @@ class categorie extends helper
 				'CAT_NAME'				=> $row['cat_name'],
 				'CAT_DESC'				=> generate_text_for_display($row['cat_desc'], $row['cat_desc_uid'], $row['cat_desc_bitfield'], $row['cat_desc_options']),
 				'CAT_LINKS'				=> $row['cat_links'],
-				'CAT_IMG'				=> $this->get_img_path('icons', $row['cat_icon']),
+				'CAT_ICON'        		=> ($row['cat_icon']) ? $row['cat_icon'] : 'fa-folder',
+				'CAT_ICON_COLOR'  		=> ($row['cat_icon_color']) ? $row['cat_icon_color'] : '#336699',
 
 				'U_CAT'					=> $this->helper->route('nextgen_phpbbdirectory_dynamic_route_' . $row['cat_id']),
 			));

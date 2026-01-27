@@ -42,10 +42,51 @@
 			<label><input type="checkbox" class="radio" name="desc_parse_urls"{% if S_DESC_URLS_CHECKED %} checked="checked"{% endif %} /> {{ lang('PARSE_URLS') }}</label></dd>
 	</dl>
 	<dl>
-		<dt><label for="cat_icon">{{ lang('DIR_CAT_ICON') }}{{ lang('COLON') }}</label></dt>
-		<dd><select id="cat_icon" name="cat_icon">{{ S_ICON_OPTIONS }}</select></dd>
-		<dd><img src="{{ ICON_IMAGE }}" id="cat_image" alt="" /></dd>
+		<dt><label>{{ lang('PREVIEW') }}</label></dt>
+		<dd>
+			<div style="padding: 10px; border: 1px dashed #ccc; display: inline-block; border-radius: 5px;">
+				<i id="icon_preview" 
+				class="fa {% if DIR_CAT_ICON_VALUE %}{{ DIR_CAT_ICON_VALUE }}{% else %}fa-folder{% endif %} fa-3x" 
+				style="color: {{ DIR_CAT_ICON_COLOR|default('#336699') }}; transition: all 0.3s ease;">
+				</i>
+			</div>
+		</dd>
 	</dl>
+
+	<dl>
+		<dt>
+			<label for="cat_icon">{{ lang('DIR_CAT_FA_ICON') }}{{ lang('COLON') }}</label><br />
+			<span>{{ lang('DIR_CAT_FA_ICON_EXPLAIN') }}</span>
+		</dt>
+		<dd>
+        <input type="text" id="cat_icon" name="cat_icon" 
+               value="{{ DIR_CAT_ICON_VALUE }}" 
+               maxlength="100" 
+               placeholder="fa fa-folder" 
+               style="width: 250px;" 
+               oninput="updateIconPreview(this.value)" />
+		</dd>
+	</dl>
+
+	<dl>
+		<dt>
+			<label for="cat_icon_color">{{ lang('DIR_CAT_ICON_COLOR') }}{{ lang('COLON') }}</label><br />
+			<span>{{ lang('DIR_CAT_ICON_COLOR_EXPLAIN') }}</span>
+		</dt>
+		<dd>
+			<div class="color-picker-modern">
+				<input type="color" id="cat_icon_color_picker" 
+					value="{{ DIR_CAT_ICON_COLOR|default('#336699') }}" 
+					oninput="updateColorPreview(this.value)">
+            
+				<input type="text" id="cat_icon_color" name="cat_icon_color" 
+					value="{{ DIR_CAT_ICON_COLOR|default('#336699') }}" 
+					maxlength="7" 
+					oninput="updateColorPreview(this.value)">
+			</div>
+		</dd>
+	</dl>
+
 		<dl>
 			<dt><label for="allow_comments">{{ lang('DIR_ALLOW_COMMENTS') }}{{ lang('COLON') }}</label></dt>
 			<dd><label><input type="radio" id="allow_comments" class="radio" name="allow_comments" value="1"{% if S_ALLOW_COMMENTS %} checked="checked"{% endif %} /> {{ lang('YES') }}</label>
@@ -233,7 +274,11 @@
 			<tr>
 				<td class="folder">{{ cat.FOLDER_IMAGE }}</td>
 				<td>
-					{% if cat.CAT_IMAGE %}<div style="float: {{ S_CONTENT_FLOW_BEGIN }}; margin-right: 5px;">{{ cat.CAT_IMAGE }}</div>{% endif %}
+					{% if cat.CAT_ICON %}
+					<div style="float: {{ S_CONTENT_FLOW_BEGIN }}; margin: 0 10px 5px 0; text-align: center;">
+						<i class="fa {{ cat.CAT_ICON }} fa-3x" style="color: {{ cat.CAT_ICON_COLOR }};"></i>
+					</div>
+					{% endif %}
 					<strong><a href="{{ cat.U_CAT }}">{{ cat.CAT_NAME }}</a></strong>
 					{% if cat.CAT_DESCRIPTION %}<br /><span>{{ cat.CAT_DESCRIPTION }}</span>{% endif %}
 					<br /><br /><span>{{ lang('DIR_LINKS') }}{{ lang('COLON') }} <strong>{{ cat.CAT_LINKS }}</strong></span>

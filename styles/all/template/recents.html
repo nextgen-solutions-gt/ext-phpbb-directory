@@ -22,12 +22,11 @@
 											<table class="tablebg" style="padding:2px;border-spacing:5px; width:100%">
 												<tr>
 													<td class="bg1" style="padding:5px 0 5px 0; width:{{ block.S_COL_WIDTH }}; text-align: center;">
-						<div class="dir-thumb">
-							<a href="{{ col.U_LINK }}"
-							   onclick="window.open('{{ col.U_VIEW|e('js') }}'); return false;">
-								<img src="{{ col.U_THUMB }}" alt="{{ lang('DIR_THUMB') }}">
-							</a>
-						</div>
+														<div class="dir-thumb">
+															<a href="{{ col.U_LINK }}" onclick="window.open('{{ col.U_VIEW|e('js') }}'); return false;">
+																<img src="{{ col.U_THUMB }}" alt="{{ lang('DIR_THUMB') }}">
+															</a>
+														</div>
 													</td>
 												</tr>
 												<tr>
@@ -38,7 +37,7 @@
 															{% if col.TIME %}<strong>&raquo;</strong> {{ col.TIME }}<br />{% endif %}
 															<strong>{{ lang('DIR_CAT') }}{{ lang('COLON') }}</strong> <a href="{{ col.U_CAT }}">{{ col.CAT }}</a><br />
 															<strong>{{ col.L_DIR_SEARCH_NB_CLICKS }}{{ lang('COLON') }}</strong> {{ col.COUNT }}<br />
-															<strong>{{ col.L_DIR_SEARCH_NB_COMMS }}{{ lang('COLON') }}</strong> <a href="{{ col.U_COMMENT }}" onclick="window.open('{{ col.U_COMMENT }}', 'phpBB_dir_commentaire', 'height=600, resizable=yes, scrollbars=yes, width=905');return false;">{{ col.COMMENT }}</a><br />
+															<strong>{{ col.L_DIR_SEARCH_NB_COMMS }}{{ lang('COLON') }}</strong> {{ col.COMMENT }}<br />
 														</div>
 													</td>
 												</tr>

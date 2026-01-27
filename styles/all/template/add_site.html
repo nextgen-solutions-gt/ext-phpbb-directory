@@ -76,16 +76,16 @@
 				</div>
 			{% endif %}
 
-        <input type="file" name="banner_upload" id="banner_upload" class="inputbox autowidth" /><br />
-        <span class="gensmall">{{ lang('DIR_BANNER_URL') }}</span><br />
-        <input type="text" tabindex="6" name="banner" id="banner" size="35" value="{{ BANNER }}" class="inputbox autowidth" placeholder="http://...">
-    </dd>
+				<input type="file" name="banner_upload" id="banner_upload" class="inputbox autowidth" /><br />
+				<span class="gensmall">{{ lang('DIR_BANNER_URL') }}</span><br />
+				<input type="text" tabindex="6" name="banner" id="banner" size="35" value="{{ BANNER }}" class="inputbox autowidth" placeholder="http://...">
+			</dd>
     
     {% if BANNER %}
         <dd><label for="delete_banner"><input type="checkbox" name="delete_banner" id="delete_banner"> {{ lang('DIR_DELETE_BANNER') }}</label></dd>
     {% endif %}
-</dl>
-{% endif %}
+		</dl>
+		{% endif %}
 
             {% if S_FLAG %}
             <dl>

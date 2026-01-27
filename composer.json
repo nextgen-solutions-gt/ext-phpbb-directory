@@ -2,9 +2,9 @@
     "name": "nextgen/phpbbdirectory",
     "type": "phpbb-extension",
     "description": "This extension adds a comprehensive links directory to your phpBB forum with local banner storage and cURL optimization.",
-    "homepage": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory",
-    "version": "2.0.0-RC4",
-    "time": "2026-01-25",
+    "homepage": "https://nextgen.gt/extensions/phpbb-directory/",
+    "version": "2.0.0-RC5",
+    "time": "2026-01-26",
     "license": "GPL-2.0",
     "authors": [
         {

@@ -558,10 +558,8 @@ class links extends helper
             'S_HIDDEN_FIELDS' => build_hidden_fields($this->s_hidden_fields),
         ));
     }
-	
 
-
-/**
+	/**
     * Display a banner
     *
     * @param    string $banner_img        Path to banner file
@@ -654,46 +652,46 @@ class links extends helper
         $s_flag        = $this->config['dir_activ_flag'];
 
         $this->template->assign_vars(array(
-            'BBCODE_STATUS'            => ($this->config['allow_bbcode'])     ? $this->language->lang('BBCODE_IS_ON', '<a href="' . append_sid($this->root_path."faq.$this->php_ext", 'mode=bbcode') . '">', '</a>') : $this->language->lang('BBCODE_IS_OFF', '<a href="' . append_sid($this->root_path."faq.$this->php_ext", 'mode=bbcode') . '">', '</a>'),
-            'IMG_STATUS'            => ($this->config['allow_bbcode'])    ? $this->language->lang('IMAGES_ARE_ON') : $this->language->lang('IMAGES_ARE_OFF'),
-            'SMILIES_STATUS'        => ($this->config['allow_smilies']) ? $this->language->lang('SMILIES_ARE_ON') : $this->language->lang('SMILIES_ARE_OFF'),
-            'URL_STATUS'            => ($this->config['allow_post_links']) ? $this->language->lang('URL_IS_ON') : $this->language->lang('URL_IS_OFF'),
-            'FLASH_STATUS'            => ($this->config['allow_bbcode'] && $this->config['allow_post_flash'])    ? $this->language->lang('FLASH_IS_ON') : $this->language->lang('FLASH_IS_OFF'),
+            'BBCODE_STATUS'            	=> ($this->config['allow_bbcode'])     ? $this->language->lang('BBCODE_IS_ON', '<a href="' . append_sid($this->root_path."faq.$this->php_ext", 'mode=bbcode') . '">', '</a>') : $this->language->lang('BBCODE_IS_OFF', '<a href="' . append_sid($this->root_path."faq.$this->php_ext", 'mode=bbcode') . '">', '</a>'),
+            'IMG_STATUS'            	=> ($this->config['allow_bbcode'])    ? $this->language->lang('IMAGES_ARE_ON') : $this->language->lang('IMAGES_ARE_OFF'),
+            'SMILIES_STATUS'        	=> ($this->config['allow_smilies']) ? $this->language->lang('SMILIES_ARE_ON') : $this->language->lang('SMILIES_ARE_OFF'),
+            'URL_STATUS'            	=> ($this->config['allow_post_links']) ? $this->language->lang('URL_IS_ON') : $this->language->lang('URL_IS_OFF'),
+            'FLASH_STATUS'            	=> ($this->config['allow_bbcode'] && $this->config['allow_post_flash'])    ? $this->language->lang('FLASH_IS_ON') : $this->language->lang('FLASH_IS_OFF'),
 
-            'L_TITLE'                => $title,
-            'L_DIR_DESCRIPTION_EXP'    => $this->language->lang('DIR_DESCRIPTION_EXP', $this->config['dir_length_describe']),
-            'L_DIR_SUBMIT_TYPE'        => $this->categorie->dir_submit_type($this->categorie->need_approval()),
-            'L_DIR_SITE_BANN_EXP'    => $this->language->lang('DIR_SITE_BANN_EXP', $this->config['dir_banner_width'], $this->config['dir_banner_height']),
+            'L_TITLE'                	=> $title,
+            'L_DIR_DESCRIPTION_EXP'    	=> $this->language->lang('DIR_DESCRIPTION_EXP', $this->config['dir_length_describe']),
+            'L_DIR_SUBMIT_TYPE'        	=> $this->categorie->dir_submit_type($this->categorie->need_approval()),
+            'L_DIR_SITE_BANN_EXP'    	=> $this->language->lang('DIR_SITE_BANN_EXP', $this->config['dir_banner_width'], $this->config['dir_banner_height']),
 
-            'S_GUEST'                => $s_guest ? true : false,
-            'S_RSS'                    => $s_rss ? true : false,
-            'S_BANNER'                => $s_banner ? true : false,
-            'S_BACK'                => $s_back ? true : false,
-            'S_FLAG'                => $s_flag ? true : false,
-            'S_BBCODE_ALLOWED'         => (bool) $this->config['allow_bbcode'],
-            'S_BBCODE_IMG'            => (bool) $this->config['allow_bbcode'],
-            'S_BBCODE_FLASH'        => ($this->config['allow_bbcode'] && $this->config['allow_post_flash']) ? true : false,
-            'S_BBCODE_QUOTE'        => true,
-            'S_LINKS_ALLOWED'        => (bool) $this->config['allow_post_links'],
+            'S_GUEST'                	=> $s_guest ? true : false,
+            'S_RSS'                    	=> $s_rss ? true : false,
+            'S_BANNER'                	=> $s_banner ? true : false,
+            'S_BACK'                	=> $s_back ? true : false,
+            'S_FLAG'                	=> $s_flag ? true : false,
+            'S_BBCODE_ALLOWED'         	=> (bool) $this->config['allow_bbcode'],
+            'S_BBCODE_IMG'            	=> (bool) $this->config['allow_bbcode'],
+            'S_BBCODE_FLASH'        	=> ($this->config['allow_bbcode'] && $this->config['allow_post_flash']) ? true : false,
+            'S_BBCODE_QUOTE'        	=> true,
+            'S_LINKS_ALLOWED'        	=> (bool) $this->config['allow_post_links'],
 
-            'DIR_FLAG_PATH'            => $flag_path,
-            'DIR_FLAG_IMAGE'        => $this->flag ? $this->get_img_path('flags', $this->flag) : '',
+            'DIR_FLAG_PATH'            	=> $flag_path,
+            'DIR_FLAG_IMAGE'        	=> $this->flag ? $this->get_img_path('flags', $this->flag) : '',
 
-            'EDIT_MODE'                => ($mode == 'edit') ? true : false,
+            'EDIT_MODE'                	=> ($mode == 'edit') ? true : false,
 
-            'SITE_NAME'                => isset($this->site_name) ? $this->site_name : '',
-            'SITE_URL'                => isset($this->url) ? $this->url : '',
-            'DESCRIPTION'            => isset($this->description) ? $this->description : '',
-            'GUEST_EMAIL'            => isset($this->guest_email) ? $this->guest_email : '',
-            'RSS'                    => isset($this->rss) ? $this->rss : '',
-            'BANNER'                => isset($this->banner) ? $this->banner : '',
-            'BACK'                    => isset($this->back) ? $this->back : '',
-            'S_POST_ACTION'            => '',
-            'S_CATLIST'                => $this->categorie->make_cat_select($cat_id),
-            'S_LIST_FLAG'            => $this->link->get_dir_flag_list($flag_path, $this->flag),
-            'S_DESC_STAR'            => (@$this->categorie->data['cat_must_describe']) ? '*' : '',
-            'S_ROOT'                => $cat_id,
-            'S_HIDDEN_FIELDS'        => build_hidden_fields($this->s_hidden_fields),
+            'SITE_NAME'               	=> isset($this->site_name) ? $this->site_name : '',
+            'SITE_URL'                	=> isset($this->url) ? $this->url : '',
+            'DESCRIPTION'            	=> isset($this->description) ? $this->description : '',
+            'GUEST_EMAIL'            	=> isset($this->guest_email) ? $this->guest_email : '',
+            'RSS'                    	=> isset($this->rss) ? $this->rss : '',
+            'BANNER'                	=> isset($this->banner) ? $this->banner : '',
+            'BACK'                    	=> isset($this->back) ? $this->back : '',
+            'S_POST_ACTION'            	=> '',
+            'S_CATLIST'                	=> $this->categorie->make_cat_select($cat_id),
+            'S_LIST_FLAG'            	=> $this->link->get_dir_flag_list($flag_path, $this->flag),
+            'S_DESC_STAR'            	=> (@$this->categorie->data['cat_must_describe']) ? '*' : '',
+            'S_ROOT'                	=> $cat_id,
+            'S_HIDDEN_FIELDS'        	=> build_hidden_fields($this->s_hidden_fields),
         ));
     }
 }

@@ -1,0 +1,38 @@
+<script>
+function updateIconPreview(val) {
+    var preview = document.getElementById('icon_preview');
+    if (preview) {
+        // En FA 4.7 (phpBB), la base es 'fa' y el icono es 'fa-xxx'
+        // Si el usuario escribe "fa-folder", le agregamos el "fa" base.
+        var iconClass = val.trim();
+        
+        if (!iconClass) {
+            iconClass = 'fa-folder';
+        }
+
+        // phpBB usa la clase 'icon' y 'fa' para inyectar la fuente
+        preview.className = 'fa ' + iconClass + ' fa-3x';
+    }
+}
+
+function updateColorPreview(val) {
+    var preview = document.getElementById('icon_preview');
+    var picker = document.getElementById('cat_icon_color_picker');
+    var textInput = document.getElementById('cat_icon_color');
+
+    // 1. Actualizar el color del icono de vista previa
+    if (preview) {
+        preview.style.color = val;
+    }
+
+    // 2. Sincronizar el selector visual con el valor recibido
+    if (picker && picker.value !== val) {
+        picker.value = val;
+    }
+
+    // 3. Sincronizar el campo de texto con el valor recibido
+    if (textInput && textInput.value !== val) {
+        textInput.value = val;
+    }
+}
+</script>

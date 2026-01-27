@@ -447,10 +447,10 @@ class cat extends helper
 			$this->template->assign_var('S_RESYNCED', true);
 		}
 
-		$sql = 'SELECT cat_id, parent_id, right_id, left_id, cat_name, cat_icon, cat_desc_uid, cat_desc_bitfield, cat_desc, cat_desc_options, cat_links
-			FROM ' . $this->categories_table . '
-			WHERE parent_id = ' . (int) $this->parent_id . '
-			ORDER BY left_id';
+		$sql = 'SELECT cat_id, parent_id, right_id, left_id, cat_name, cat_icon, cat_icon_color, cat_desc_uid, cat_desc_bitfield, cat_desc, cat_desc_options, cat_links
+        FROM ' . $this->categories_table . '
+        WHERE parent_id = ' . (int) $this->parent_id . '
+        ORDER BY left_id';
 		$result = $this->db->sql_query($sql);
 
 		if ($row = $this->db->sql_fetchrow($result))
@@ -463,7 +463,8 @@ class cat extends helper
 
 				$this->template->assign_block_vars('cats', array(
 					'FOLDER_IMAGE'		=> $folder_image,
-					'CAT_IMAGE'			=> ($row['cat_icon']) ? '<img src="' . $this->get_img_path('icons', $row['cat_icon']) . '" alt="" />' : '',
+					'CAT_ICON'        	=> ($row['cat_icon']) ? $row['cat_icon'] : 'fa-folder',
+					'CAT_ICON_COLOR'  	=> ($row['cat_icon_color']) ? $row['cat_icon_color'] : '#336699',
 					'CAT_NAME'			=> $row['cat_name'],
 					'CAT_DESCRIPTION'	=> generate_text_for_display($row['cat_desc'], $row['cat_desc_uid'], $row['cat_desc_bitfield'], $row['cat_desc_options']),
 					'CAT_LINKS'			=> $row['cat_links'],
@@ -568,7 +569,6 @@ class cat extends helper
 					'cat_desc_uid'			=> '',
 					'cat_desc_options'		=> 7,
 					'cat_desc_bitfield'		=> '',
-					'cat_icon'				=> $this->request->variable('cat_icon', ''),
 					'display_subcat_list'	=> $this->request->variable('display_on_index', false),
 					'cat_allow_comments'	=> $this->request->variable('allow_comments', 1),
 					'cat_allow_votes'		=> $this->request->variable('allow_votes', 1),
@@ -579,6 +579,8 @@ class cat extends helper
 					'cat_cron_enable'		=> $this->request->variable('cron_enable', 0),
 					'cat_cron_freq'			=> $this->request->variable('cron_every', 7),
 					'cat_cron_nb_check'		=> $this->request->variable('nb_check', 1),
+					'cat_icon'				=> $this->request->variable('cat_icon', ''),
+                    'cat_icon_color'        => $this->request->variable('cat_icon_color', '#336699'),
 				);
 
 				// Get data for cat description if specified
@@ -690,7 +692,6 @@ class cat extends helper
 
 			'L_TITLE'					=> $this->language->lang('DIR_' . strtoupper($this->action) . '_CAT'),
 			'ERROR_MSG'					=> (sizeof($this->errors)) ? implode('<br />', $this->errors) : '',
-			'ICON_IMAGE'				=> ($this->cat_data['cat_icon']) ? $this->get_img_path('icons', $this->cat_data['cat_icon']) : 'images/spacer.gif',
 
 			'DIR_ICON_PATH'				=> $this->get_img_path('icons'),
 			'DIR_CAT_NAME'				=> $this->cat_data['cat_name'],
@@ -702,7 +703,9 @@ class cat extends helper
 			'S_DESC_URLS_CHECKED'		=> ($dir_cat_desc_data['allow_urls']) ? true : false,
 			'S_DISPLAY_SUBCAT_LIST'		=> ($this->cat_data['display_subcat_list']) ? true : false,
 			'S_PARENT_OPTIONS'			=> $parents_list,
-			'S_ICON_OPTIONS'			=> $this->_get_dir_icon_list($this->get_img_path('icons'), $this->cat_data['cat_icon']),
+			// Agrega esto dentro del array en _display_cat_form
+			'DIR_CAT_ICON_VALUE'        => $this->cat_data['cat_icon'],
+			'DIR_CAT_ICON_COLOR' 		=> (isset($this->cat_data['cat_icon_color'])) ? $this->cat_data['cat_icon_color'] : '#336699',
 			'S_ALLOW_COMMENTS'			=> ($this->cat_data['cat_allow_comments']) ? true : false,
 			'S_ALLOW_VOTES'				=> ($this->cat_data['cat_allow_votes']) ? true : false,
 			'S_MUST_DESCRIBE'			=> ($this->cat_data['cat_must_describe']) ? true : false,
@@ -731,7 +734,7 @@ class cat extends helper
 	*/
 	private function _get_cat_info($cat_id)
 	{
-		$sql = 'SELECT cat_id, parent_id, right_id, left_id, cat_desc, cat_desc_uid, cat_desc_options, cat_icon, cat_name, cat_route, display_subcat_list, cat_allow_comments, cat_allow_votes, cat_must_describe, cat_count_all, cat_validate, cat_cron_freq, cat_cron_nb_check, cat_link_back, cat_cron_enable, cat_cron_next
+		$sql = 'SELECT cat_id, parent_id, right_id, left_id, cat_desc, cat_desc_uid, cat_desc_options, cat_icon, cat_name, cat_route, display_subcat_list, cat_allow_comments, cat_allow_votes, cat_must_describe, cat_count_all, cat_validate, cat_cron_freq, cat_cron_nb_check, cat_link_back, cat_cron_enable, cat_cron_next, cat_icon_color
 			FROM ' . $this->categories_table . '
 			WHERE cat_id = ' . (int) $cat_id;
 		$result = $this->db->sql_query($sql);
@@ -1116,43 +1119,5 @@ class cat extends helper
 			$this->db->sql_query($sql);
 		}
 		$this->db->sql_freeresult($result);
-	}
-
-	/**
-	* Display icons drop-down list
-	*
-	* @param	string	$icons_path
-	* @param	string	$img_selected
-	* @return	string
-	*/
-	private function _get_dir_icon_list($icons_path, $img_selected)
-	{
-		$imglist = filelist($icons_path, '');
-		$filename_list = '<option value="">----------</option>';
-
-		foreach ($imglist as $path => $img_ary)
-		{
-			sort($img_ary);
-
-			foreach ($img_ary as $img)
-			{
-				$img = $path . $img;
-				$selected = '';
-
-				if (strlen($img) > 255)
-				{
-					continue;
-				}
-
-				if ($img == $img_selected)
-				{
-					$selected = ' selected="selected"';
-				}
-
-				$filename_list .= '<option value="' . htmlspecialchars($img) . '"' . $selected . '>' . $img . '</option>';
-			}
-		}
-
-		return ($filename_list);
 	}
 }

@@ -2,6 +2,26 @@
 
 All notable changes to the **phpBB Directory** extension will be documented in this file.
 
+## [2.0.0-RC5] - 2026-01-26
+
+### UI & Icon System
+- **Native Integration**: Standardized the icon system to use phpBB's native Font Awesome 4.7 library. This eliminates conflicts with other extensions and removes the need for external CDNs.
+- **Responsive Category Headers**: Added CSS media queries to dynamically resize category icons on mobile devices (downscaling to `2em` for better readability).
+- **Enhanced Visuals**: Increased category icon size to `fa-4x` in the main directory listing to provide a more modern and prominent look.
+- **Color System**: Implemented `CAT_ICON_COLOR` block variable support in the core `categorie.php` to ensure category colors are correctly rendered across all directory listings.
+
+### ACP (Admin Control Panel)
+- **Improved Icon Logic**: Updated the icon previewer and JavaScript logic to support Font Awesome 4.7 syntax (standardizing on the `fa` prefix).
+- **UX Improvements**: Integrated a modern Color Picker with real-time preview and hexadecimal input synchronization for category icons.
+- **Language Updates**: Updated `DIR_CAT_FA_ICON_EXPLAIN` in English with accurate Font Awesome 4.7 examples and official documentation links.
+
+### Fixed
+- **Empty Style Attributes**: Resolved an issue where icons would render `style="color: ;"` when no color was defined in the database.
+- **Icon Invisibility**: Fixed prefix mismatch bugs where icons failed to render due to modern `fas` or `fab` class usage.
+- **Legacy Image Support**: Cleaned up template logic by removing unused `CAT_IMAGE` fallbacks in favor of the new icon system.
+
+---
+
 ## [2.0.0-RC4] - 2026-01-25
 
 ### Added

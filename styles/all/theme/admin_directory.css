@@ -1,0 +1,44 @@
+#icon_preview.fa {
+    font-family: 'FontAwesome' !important;
+    display: inline-block;
+    font-style: normal;
+}
+
+/* Estilos para el Selector de Color en el ACP */
+.color-picker-modern {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estilo para el input de color */
+.color-picker-modern input[type="color"] {
+    -webkit-appearance: none;
+    border: 1px solid #B4BAC0;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    background: none;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+/* Quitar padding interno en Webkit */
+.color-picker-modern input[type="color"]::-webkit-color-swatch-wrapper { 
+    padding: 0; 
+}
+
+/* Quitar bordes internos en Webkit */
+.color-picker-modern input[type="color"]::-webkit-color-swatch { 
+    border: none; 
+    border-radius: 2px; 
+}
+
+/* Estilo del campo de texto HEX */
+#cat_icon_color {
+    width: 85px !important;
+    text-align: center;
+    font-family: monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+}

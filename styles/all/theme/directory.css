@@ -190,3 +190,8 @@ table.recents {
 	padding-right: 90px;
 	padding-left: 0;
 }
+
+.dir-icon-container i {
+    width: 1.25em; /* Asegura que todos los iconos ocupen el mismo ancho horizontal */
+    text-align: center;
+}

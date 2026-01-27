@@ -24,23 +24,28 @@
 			{% if cat.S_ROW_COUNT is even %}
 			<tr>
 			{% endif %}
-				<td class="dir_cat_{% if cat.S_ROW_COUNT is even %}left{% else %}right{% endif %}">
-					<ul class="topiclist forums">
-						<li class="row">
-							<dl class="icon_cat" style="background-image: url({{ cat.CAT_IMG }});">
-								<dt title="{{ cat.CAT_NAME }}">
-									<a href="{{ cat.U_CAT }}" class="forumtitle" title="{{ cat.CAT_NAME }}"><b>{{ cat.CAT_NAME }}</b></a>&nbsp;({{ cat.CAT_LINKS }})<br />
-									{{ cat.CAT_DESC }}
-									<br /><br />
-									{% for subcat in cat.subcat %}
-										<a href="{{ subcat.U_CAT }}" class="sub_cat">{{ subcat.CAT_NAME }}</a>({{ subcat.CAT_LINKS }})
-									{% endfor %}
-								</dt>
-								<dd>&nbsp;</dd>
-							</dl>
-						</li>
-					</ul>
-				</td>
+			<td class="dir_cat_{% if cat.S_ROW_COUNT is even %}left{% else %}right{% endif %}">
+				<ul class="topiclist forums">
+					<li class="row">
+						<dl class="icon_cat" style="display: flex; align-items: flex-start; background-image: none;">
+                
+							<div class="dir-icon-container" style="margin: 10px; min-width: 40px; text-align: center;">
+								<i class="fa {{ cat.CAT_ICON|default('fa-folder') }} fa-3x" style="color: {{ cat.CAT_ICON_COLOR }};"></i>
+							</div>
+
+							<dt title="{{ cat.CAT_NAME }}" style="padding-left: 5px;">
+								<a href="{{ cat.U_CAT }}" class="forumtitle" title="{{ cat.CAT_NAME }}"><b>{{ cat.CAT_NAME }}</b></a>&nbsp;({{ cat.CAT_LINKS }})<br />
+								{{ cat.CAT_DESC }}
+								<br /><br />
+								{% for subcat in cat.subcat %}
+									<a href="{{ subcat.U_CAT }}" class="sub_cat">{{ subcat.CAT_NAME }}</a>({{ subcat.CAT_LINKS }})
+								{% endfor %}
+							</dt>
+							<dd>&nbsp;</dd>
+						</dl>
+					</li>
+				</ul>
+			</td>
 			{% if cat.S_ROW_COUNT is odd %}
 			</tr>
 			{% endif %}
