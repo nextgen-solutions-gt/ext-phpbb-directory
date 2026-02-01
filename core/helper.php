@@ -59,6 +59,14 @@ abstract class helper
 	}
 
 	/**
+    * Set the Symfony Request Stack (Arregla el error Fatal)
+    */
+    public function set_symfony_request(\Symfony\Component\HttpFoundation\RequestStack $request_stack)
+    {
+        $this->request_stack = $request_stack;
+    }
+
+	/**
 	* Set the tables names
 	*
 	* @param string	$categories_table

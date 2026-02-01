@@ -1,9 +1,9 @@
 <div id="dir-comments-{{ LINK_ID }}" class="dir-comments-container">
 	<fieldset class="submit-buttons">
 		{% if S_AUTH_COMM %}
-		<form method="post"
-			action="{{ path('nextgen_phpbbdirectory_comment_ajax_post', { link_id: LINK_ID }) }}"
-			class="js-dir-comment-form"
+		<form method="post" 
+			action="{{ U_ADD_COMMENT_RELATIVE }}" 
+			class="js-dir-comment-form" 
 			data-link-id="{{ LINK_ID }}">
 			<textarea name="message" class="inputbox dir-comment-textarea" rows="4" required></textarea>
 			{{ S_FORM_TOKEN }}

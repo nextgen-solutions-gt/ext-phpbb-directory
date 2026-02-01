@@ -207,6 +207,7 @@ services:
             - [set_extension_manager, ['@ext.manager']]
             - [set_path_helper, ['@path_helper']]
             - [set_tables, ['%tables.dir.categories%','%tables.dir.comments%','%tables.dir.links%','%tables.dir.votes%','%tables.dir.watch%']]
+            - [set_symfony_request, ['@request_stack']]
 
     nextgen.phpbbdirectory.core.nestedset_category:
         class: nextgen\phpbbdirectory\core\nestedset_category

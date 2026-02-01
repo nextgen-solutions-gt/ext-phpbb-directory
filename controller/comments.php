@@ -419,29 +419,42 @@ class comments extends helper
 
 /**
     * Handle AJAX comment submission.
+    *
+    * Processes the comment, saves it to the database, and returns the updated
+    * comment list and a fresh form token via JSON.
+    *
+    * @param int $link_id The link ID to attach the comment to
+    * @return \Symfony\Component\HttpFoundation\JsonResponse
     */
     public function ajax_post($link_id)
     {
+        // 1. Pre-checks: Enable status, Permissions and AJAX request
         $this->_check_comments_enable($link_id);
 
         if (!$this->auth->acl_get('u_comment_dir'))
         {
-            throw new \phpbb\exception\http_exception(403, 'DIR_ERROR_NOT_AUTH');
+            return new \Symfony\Component\HttpFoundation\JsonResponse([
+                'error' => $this->language->lang('DIR_ERROR_NOT_AUTH')
+            ], 403);
         }
 
         if (!$this->request->is_ajax())
         {
-            throw new \phpbb\exception\http_exception(400, 'BAD_REQUEST');
+            return new \Symfony\Component\HttpFoundation\JsonResponse([
+                'error' => 'Bad Request'
+            ], 400);
         }
 
-        // Validar el token actual
+        // 2. Validate Form Key (Security Token)
         if (!check_form_key('dir_form_comment'))
         {
             return new \Symfony\Component\HttpFoundation\JsonResponse([
-                'error' => $this->language->lang('FORM_INVALID')
+                'error'     => $this->language->lang('FORM_INVALID'),
+                'new_token' => add_form_key('dir_form_comment'), // Refresh token on failure
             ]);
         }
 
+        // 3. Data Validation
         $this->s_comment = $this->request->variable('message', '', true);
 
         if (!function_exists('validate_data'))
@@ -454,15 +467,15 @@ class comments extends helper
             ['reply' => [['string', false, 1, $this->config['dir_length_comments']]]]
         );
 
-        $error = array_map([$this->language, 'lang'], $error);
-
         if ($error)
         {
+            $error_msg = array_map([$this->language, 'lang'], $error);
             return new \Symfony\Component\HttpFoundation\JsonResponse([
-                'error' => implode('<br>', $error)
+                'error' => implode('<br>', $error_msg)
             ]);
         }
 
+        // 4. Prepare text for storage (BBCode/Smilies parsing)
         $uid = $bitfield = $flags = '';
         generate_text_for_storage(
             $this->s_comment,
@@ -478,10 +491,11 @@ class comments extends helper
             (bool) $this->config['dir_allow_links']
         );
 
+        // 5. Save Comment
         $this->comment->add([
             'comment_link_id'  => (int) $link_id,
             'comment_date'     => time(),
-            'comment_user_id'  => $this->user->data['user_id'],
+            'comment_user_id'  => (int) $this->user->data['user_id'],
             'comment_user_ip'  => $this->user->ip,
             'comment_text'     => $this->s_comment,
             'comment_uid'      => $uid,
@@ -489,13 +503,21 @@ class comments extends helper
             'comment_bitfield' => $bitfield,
         ]);
 
-        // Recargamos la vista de comentarios (esto llena las variables del template)
+        // 6. Generate updated HTML list
+        // We call view() to populate template variables for the specific link
         $this->view($link_id, 1);
+
+        // Ensure no previous output (like PHP notices) interferes with JSON
+        if (ob_get_length())
+        {
+            ob_clean();
+        }
 
         ob_start();
         $this->template->display('comments_list.html');
         $html = ob_get_clean();
 
+        // 7. Get updated total
         $sql = 'SELECT COUNT(comment_id) AS total
                 FROM ' . $this->comments_table . '
                 WHERE comment_link_id = ' . (int) $link_id;
@@ -504,12 +526,11 @@ class comments extends helper
         $total = (int) $this->db->sql_fetchfield('total');
         $this->db->sql_freeresult($result);
 
-        // RESPUESTA FINAL
+        // 8. Final Response
         return new \Symfony\Component\HttpFoundation\JsonResponse([
             'html'      => $html,
             'total'     => $total,
-            // Generamos un nuevo token para el siguiente comentario
-            'new_token' => add_form_key('dir_form_comment'), 
+            'new_token' => add_form_key('dir_form_comment'), // Token for the next submission
         ]);
     }
 
@@ -699,6 +720,7 @@ class comments extends helper
 			'S_HIDDEN_FIELDS'	=> build_hidden_fields($this->s_hidden_fields),
 			'S_BUTTON_NAME'		=> ($mode == 'edit') ? 'update_comment' : 'submit_comment',
 			'S_POST_ACTION' 	=> ($mode == 'edit') ? '' : $this->helper->route('nextgen_phpbbdirectory_comment_new_controller', array('link_id' => (int) $link_id)),
+			'U_ADD_COMMENT_RELATIVE' => $this->helper->route('nextgen_phpbbdirectory_comment_ajax_post', array('link_id' => (int) $link_id), false),
 		));
 	}
 }

@@ -99,7 +99,7 @@
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            credentials: 'same-origin'
+            credentials: 'include'
         })
         .then(r => r.json())
         .then(data => {
@@ -157,7 +157,7 @@
 
         const url = link.href + (link.href.includes('?') ? '&ajax=1' : '?ajax=1');
 
-        fetch(url, { credentials: 'same-origin' })
+        fetch(url, { credentials: 'include' })
             .then(r => r.text())
             .then(html => {
                 const tmp = document.createElement('div');
