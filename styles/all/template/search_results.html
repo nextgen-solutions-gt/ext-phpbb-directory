@@ -3,86 +3,94 @@
 <h2>{{ SEARCH_MATCHES }}{% if SEARCH_WORDS %}: <a href="{{ U_SEARCH_WORDS }}">{{ SEARCH_WORDS }}</a>{% endif %}</h2>
 
 {% if SEARCH_CATEGORY %}
-	<p class="return-link">
-		<a class="arrow-{{ S_CONTENT_FLOW_BEGIN }}" href="{{ U_SEARCH_CATEGORY }}">
-			<i class="icon fa-angle-{{ S_CONTENT_FLOW_BEGIN }} fa-fw icon-black" aria-hidden="true"></i><span>{{ SEARCH_CATEGORY }}</span>
-		</a>
-	</p>
+    <p class="return-link">
+        <a class="arrow-{{ S_CONTENT_FLOW_BEGIN }}" href="{{ U_SEARCH_CATEGORY }}">
+            <i class="icon fa-angle-{{ S_CONTENT_FLOW_BEGIN }} fa-fw icon-black" aria-hidden="true"></i><span>{{ SEARCH_CATEGORY }}</span>
+        </a>
+    </p>
 {% else %}
-	<p class="advanced-search-link">
-		<a class="arrow-{{ S_CONTENT_FLOW_BEGIN }}" href="{{ U_DIR_SEARCH }}" title="{{ lang('SEARCH_ADV') }}">
-			<i class="icon fa-angle-{{ S_CONTENT_FLOW_BEGIN }} fa-fw icon-black" aria-hidden="true"></i><span>{{ lang('GO_TO_SEARCH_ADV') }}</span>
-		</a>
-	</p>
+    <p class="advanced-search-link">
+        <a class="arrow-{{ S_CONTENT_FLOW_BEGIN }}" href="{{ U_DIR_SEARCH }}" title="{{ lang('SEARCH_ADV') }}">
+            <i class="icon fa-angle-{{ S_CONTENT_FLOW_BEGIN }} fa-fw icon-black" aria-hidden="true"></i><span>{{ lang('GO_TO_SEARCH_ADV') }}</span>
+        </a>
+    </p>
 {% endif %}
 
 {% if pagination or PAGE_NUMBER %}
-	<div class="action-bar bar-top">
-		<div class="pagination">
-			{{ SEARCH_MATCHES }}
-			{% if pagination %}
-				{% include 'pagination.html' %}
-			{% else %}
-				&bull; {{ PAGE_NUMBER }}
-			{% endif %}
-		</div>
-	</div>
+    <div class="action-bar bar-top">
+        <div class="pagination">
+            {{ SEARCH_MATCHES }}
+            {% if pagination %}
+                {% include 'pagination.html' %}
+            {% else %}
+                &bull; {{ PAGE_NUMBER }}
+            {% endif %}
+        </div>
+    </div>
 {% endif %}
 
 {% if results %}
-	{% for result in results %}
-	<div class="post bg {% if result.S_ROW_COUNT is odd %}bg1{% else %}bg2{% endif %}">
-		<div class="inner">
-			<dl class="postprofile">
-				<dt>{{ result.THUMB }}</dt>
-				<dt>
-					<strong>{{ lang('DIR_USER_PROP') }}</strong> {{ result.S_USER }}
-				</dt>
-				{% if result.IMG_FLAG %}
-				<dd><img src="{{ result.IMG_FLAG }}" alt=""></dd>
-				{% endif %}
-				{% if result.S_TIME %}<dd><strong>&raquo;</strong> {{ result.S_TIME }}</dd>{% endif %}
-				<dd><strong>{{ lang('DIR_CAT') }}{{ lang('COLON') }}</strong> {{ result.S_CAT }}</dd>
-				<dd><strong>{{ result.L_DIR_SEARCH_NB_CLICKS }}{{ lang('COLON') }}</strong> {{ result.S_COUNT }}</dd>
-				<dd><strong>{{ result.L_DIR_SEARCH_NB_COMMS }}{{ lang('COLON') }}</strong> {{ result.S_COMMENT }}</dd>
-			</dl>
-			<div class="postbody">
-				<h3><a href="{{ result.U_SITE }}" onclick="window.open('{{ result.U_VIEW|e('js') }}'); return false;" class="gen">{{ result.S_SITE }}</a></h3>
-				<div class="content">{{ result.S_DESCRIPTION }}</div>
-				{% if result.IMG_BANNER %}<div id="sig{{ result.LINK_ID }}" class="signature">{{ result.IMG_BANNER }}</div>{% endif %}
-			</div>
-			<div class="back2top">
-				<a href="#top" class="top" title="{{ lang('BACK_TO_TOP') }}">
-					<i class="icon fa-chevron-circle-up fa-fw icon-gray" aria-hidden="true"></i>
-					<span class="sr-only">{{ lang('BACK_TO_TOP') }}</span>
-				</a>
-			</div>
-		</div>
-	</div>
-	{% endfor %}
+    {% for result in results %}
+    <div class="post bg {% if result.S_ROW_COUNT is odd %}bg1{% else %}bg2{% endif %}">
+        <div class="inner">
+            <dl class="postprofile" id="profile{{ result.LINK_ID }}" style="min-height: 180px; overflow: hidden;">
+                <dt class="directory-thumb" style="margin-bottom: 10px; max-width: 100%;">
+                    {% if result.U_THUMB %}
+                        <img src="{{ result.U_THUMB }}" alt="{{ lang('DIR_THUMB') }}" title="{{ result.SITE_NAME }}" style="max-width: 100%; height: auto;" />
+                    {% endif %}
+                </dt>
+                <dt>
+                    <strong>{{ lang('DIR_USER_PROP') }}</strong> {{ result.S_USER }}
+                </dt>
+                {% if result.IMG_FLAG %}
+                <dd><img src="{{ result.IMG_FLAG }}" alt="" style="vertical-align: middle;"></dd>
+                {% endif %}
+                {% if result.S_TIME %}<dd><strong>&raquo;</strong> {{ result.S_TIME }}</dd>{% endif %}
+                <dd><strong>{{ lang('DIR_CAT') }}{{ lang('COLON') }}</strong> {{ result.S_CAT }}</dd>
+                <dd><strong>{{ result.L_DIR_SEARCH_NB_CLICKS }}{{ lang('COLON') }}</strong> {{ result.S_COUNT }}</dd>
+                <dd><strong>{{ result.L_DIR_SEARCH_NB_COMMS }}{{ lang('COLON') }}</strong> {{ result.S_COMMENT }}</dd>
+            </dl>
+            <div class="postbody">
+                <h3><a href="{{ result.U_SITE }}" onclick="window.open('{{ result.U_VIEW|e('js') }}'); return false;" class="gen">{{ result.S_SITE }}</a></h3>
+                <div class="content">{{ result.S_DESCRIPTION }}</div>
+                {% if result.IMG_BANNER %}
+                    <div id="sig{{ result.LINK_ID }}" class="signature" style="margin-top: 20px; clear: both;">
+                        {{ result.IMG_BANNER|raw }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="back2top">
+                <a href="#top" class="top" title="{{ lang('BACK_TO_TOP') }}">
+                    <i class="icon fa-chevron-circle-up fa-fw icon-gray" aria-hidden="true"></i>
+                    <span class="sr-only">{{ lang('BACK_TO_TOP') }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 {% else %}
-	<div class="panel">
-		<div class="inner">
-			<strong>{{ lang('NO_SEARCH_RESULTS') }}</strong>
-		</div>
-	</div>
+    <div class="panel">
+        <div class="inner">
+            <strong>{{ lang('NO_SEARCH_RESULTS') }}</strong>
+        </div>
+    </div>
 {% endif %}
 
 <div class="action-bar bottom">
-	{% if results and (S_SELECT_SORT_DAYS or S_SELECT_SORT_KEY) %}
-	<form method="post" action="{{ S_SEARCH_ACTION }}">
-		{% include 'display_options.html' %}
-	</form>
-	{% endif %}
+    {% if results and (S_SELECT_SORT_DAYS or S_SELECT_SORT_KEY) %}
+    <form method="post" action="{{ S_SEARCH_ACTION }}">
+        {% include 'display_options.html' %}
+    </form>
+    {% endif %}
 
-	<div class="pagination">
-		{{ SEARCH_MATCHES }}
-		{% if pagination %}
-			{% include 'pagination.html' %}
-		{% else %}
-			&bull; {{ PAGE_NUMBER }}
-		{% endif %}
-	</div>
+    <div class="pagination">
+        {{ SEARCH_MATCHES }}
+        {% if pagination %}
+            {% include 'pagination.html' %}
+        {% else %}
+            &bull; {{ PAGE_NUMBER }}
+        {% endif %}
+    </div>
 </div>
 
 {% include 'footer.html' %}

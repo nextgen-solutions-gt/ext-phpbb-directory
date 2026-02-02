@@ -196,7 +196,7 @@ class main extends helper
 
 		// 2. Leer versión remota desde GitHub
 		$remote_url = 'https://raw.githubusercontent.com/nextgen-solutions-gt/ext-phpbb-directory/3.3/phpbbdirectory_versions.json';
-		$latest_version = $current_version; // Por defecto igual a la local si falla el remoto
+		$latest_version = $current_version; 
 		$download_url = '';
 
 		$remote_file = @file_get_contents($remote_url);
@@ -257,20 +257,19 @@ class main extends helper
 			break;
 
 			case 'comments':
-				switch ($this->db->get_sql_layer())
-				{
-					case 'sqlite':
-					case 'firebird':
-						$this->db->sql_query('DELETE FROM ' . $this->comments_table);
-					break;
+                // Clean the comments table (Standard SQL for all DB engines)
+                $this->db->sql_query('DELETE FROM ' . $this->comments_table);
 
-					default:
-						$this->db->sql_query('TRUNCATE TABLE ' . $this->comments_table);
-					break;
-				}
+                $sql = 'UPDATE ' . $this->links_table . '
+                    SET link_comment = 0';
+                $this->db->sql_query($sql);
 
-				$sql = 'UPDATE ' . $this->links_table . '
-					SET link_comment = 0';
+                if ($this->request->is_ajax())
+                {
+                    trigger_error('DIR_RESET_COMMENTS_SUCCESS');
+                }
+            break;
+
 				$this->db->sql_query($sql);
 
 				if ($this->request->is_ajax())

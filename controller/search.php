@@ -281,7 +281,7 @@ class search extends helper
 							'S_TIME'		=> ($data['link_time'] != 0) ? $this->user->format_date($data['link_time']) : '',
 							'S_COMMENT'		=> $data['link_comment'],
 
-							'THUMB'			=> '<img src="'.$s_thumb.'" alt="'.$this->language->lang('DIR_THUMB').'" title="'.$data['link_name'].'"/>',
+							'U_THUMB'    	=> $s_thumb,
 							'IMG_BANNER'	=> $s_banner,
 							'IMG_FLAG'		=> $this->config['dir_activ_flag'] ? $s_flag : '',
 

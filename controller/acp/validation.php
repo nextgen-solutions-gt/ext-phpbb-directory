@@ -272,20 +272,22 @@ class validation extends helper
 			$this->notification->mark_notifications('nextgen.phpbbdirectory.notification.type.directory_website_in_queue', (int) $row['link_id'], false);
 
 			// New notification system can't send mail to an anonymous user with an email adress storage in another table than phpbb_users
-			if ($row['link_user_id'] == ANONYMOUS)
-			{
-				$username = $email = $row['link_guest_email'];
+            if ($row['link_user_id'] == ANONYMOUS)
+            {
+                $username = $email = $row['link_guest_email'];
 
-				$messenger->template('@nextgen_phpbbdirectory/directory_website_'.$this->action, $row['user_lang']);
-				$messenger->to($email, $username);
+                $messenger->template('@nextgen_phpbbdirectory/directory_website_'.$this->action, $row['user_lang']);
+                $messenger->to($email, $username);
 
-				$messenger->assign_vars(array(
-					'USERNAME'	=> htmlspecialchars_decode($username),
-					'LINK_NAME'	=> $row['link_name'],
-				));
+                $messenger->assign_vars(array(
+                    'USERNAME'    => htmlspecialchars_decode($username),
+                    'LINK_NAME'    => $row['link_name'],
+                ));
 
-				$messenger->send(NOTIFY_EMAIL);
-			}
+                $messenger->send(NOTIFY_EMAIL);
+
+                $messenger->save();
+            }
 			else
 			{
 				$notification_data = array(

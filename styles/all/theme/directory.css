@@ -192,6 +192,24 @@ table.recents {
 }
 
 .dir-icon-container i {
-    width: 1.25em; /* Asegura que todos los iconos ocupen el mismo ancho horizontal */
+    width: 1.25em; 
     text-align: center;
+}
+
+.directory-thumb img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: block;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 700px) {
+    .postprofile {
+        width: 100% !important;
+        border: none !important;
+        float: none !important;
+        margin: 0 0 10px 0 !important;
+    }
 }

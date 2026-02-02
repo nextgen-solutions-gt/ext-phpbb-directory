@@ -10,9 +10,9 @@
     },
     "unstable": {
         "3.3": {
-            "current": "2.0.0-RC6",
-			"download": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory/archive/refs/tags/2.0.0-RC6.zip",
-            "announcement": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory/releases/tag/2.0.0-RC6",
+            "current": "2.0.0-RC7",
+			"download": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory/archive/refs/tags/2.0.0-RC7.zip",
+            "announcement": "https://github.com/nextgen-solutions-gt/ext-phpbb-directory/releases/tag/2.0.0-RC7",
             "eol": null,
             "security": false
         }
